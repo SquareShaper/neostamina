@@ -3,31 +3,42 @@
 	"id": "neostamina",
 	"version": "${version}",
 	"name": "Neostamina",
-	"description": "Stamina mod for the Neostalgia: Beta and Beyond modpack.",
+	"description": "Stamina mod for the Neostalgia: Beta and Beyond modpack. Wholesale copied from Stamina Attributes :>",
 	"authors": [
 		"SquareShaper"
 	],
 	"contact": {
 		"sources": "https://github.com/SquareShaper/neostamina"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/neostamina/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.Neostamina"
+			"net.squareshaper.neostamina.Neostamina"
 		],
-		"fabric-datagen": [
-			"com.example.NeostaminaDataGenerator"
+		"client": [
+			"net.squareshaper.neostamina.NeostaminaClient"
 		]
 	},
 	"mixins": [
-		"neostamina.mixins.json"
+		"neostamina.mixins.json",
+		{
+			"config": "neostamina.client.mixins.json",
+			"environment": "client"
+		}
 	],
+	"custom": {
+		"fzzy_config": [
+			"neostamina"
+		]
+	},
 	"depends": {
-		"fabricloader": ">=0.19.3",
-		"minecraft": "~1.21.1",
 		"java": ">=21",
-		"fabric-api": "*"
+		"minecraft": "~${minecraft_version}",
+		"fabricloader": ">=${loader_version}",
+		"fabric-api": "*",
+		"fzzy_config": ">=${fzzy_config_version}",
+		"resourcebarapi": ">=${resource_bar_api_version}"
 	}
 }

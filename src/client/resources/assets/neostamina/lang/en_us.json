@@ -1,0 +1,119 @@
+{
+  "attribute.name.generic.stamina_regeneration": "Stamina Regeneration",
+  "attribute.name.generic.base_stamina": "Base Stamina",
+  "attribute.name.generic.boosted_stamina": "Boosted Stamina",
+  "attribute.name.generic.max_stamina": "Max Stamina",
+  "attribute.name.generic.depleted_stamina_regeneration_delay_threshold": "Depleted Stamina Regeneration Delay Threshold",
+  "attribute.name.generic.stamina_regeneration_delay_threshold": "Stamina Regeneration Delay Threshold",
+  "attribute.name.generic.stamina_tick_threshold": "Stamina Tick Threshold",
+  "attribute.name.generic.reserved_stamina": "Reserved Stamina",
+
+  "hud.message.staminaTooLow": "Your stamina is too low!",
+
+  "staminaattributes.client": "Client Side Settings",
+
+  "staminaattributes.client.show_stamina_bar": "Shows the stamina bar",
+
+  "staminaattributes.client.show_full_stamina_bar": "Show full bar",
+  "staminaattributes.client.show_full_stamina_bar.desc": "Shows the stamina bar even if it's full",
+
+  "staminaattributes.client.positionSettings": "Position Settings",
+
+  "staminaattributes.client.positionSettings.origin": "Origin",
+
+  "staminaattributes.client.positionSettings.dynamically_adjust_to_armor_bar": "Adjusts to armor bar",
+  "staminaattributes.client.positionSettings.dynamically_adjust_to_armor_bar.desc": "When armor HUD is visible, the stamina bar is moved up",
+
+  "staminaattributes.client.positionSettings.is_centered": "Is centered",
+
+  "staminaattributes.client.positionSettings.offsets_x": "X Offset from Origin",
+  "staminaattributes.client.positionSettings.offsets_x.desc": "Only the highest reached threshold is used.",
+  "staminaattributes.client.positionSettings.offsets_y": "Y Offset from Origin",
+  "staminaattributes.client.positionSettings.offsets_y.desc": "Only the highest reached threshold is used.",
+
+  "staminaattributes.client.fill_direction": "Fill direction",
+
+  "staminaattributes.client.textureSettings.backgroundTextureSettings": "Background Settings",
+  "staminaattributes.client.textureSettings.progressTextureSettings": "Progress Settings",
+  "staminaattributes.client.textureSettings.reservedTextureSettings": "Reserved Settings",
+
+  "staminaattributes.client.textureSettings.progressTextureSettings.progress_decrease_animation_texture_ids": "Progress Decrease Animation Texture Ids",
+  "staminaattributes.client.textureSettings.progressTextureSettings.progress_increase_animation_texture_ids": "Progress Increase Animation Texture Ids",
+  "staminaattributes.client.textureSettings.progressTextureSettings.progress_increase_value_texture_ids": "Progress Increase Value Texture Ids",
+  "staminaattributes.client.textureSettings.progressTextureSettings.progress_texture_ids": "Progress Texture Ids",
+
+  "staminaattributes.client.texture_layer.offset_x": "X offset from background",
+  "staminaattributes.client.texture_layer.offset_y": "Y offset from background",
+
+  "staminaattributes.client.texture_layer.texture_heights": "Texture Heights",
+  "staminaattributes.client.texture_layer.texture_heights.desc": "Only the highest reached threshold is used.",
+  "staminaattributes.client.texture_layer.texture_widths": "Texture Widths",
+  "staminaattributes.client.texture_layer.texture_widths.desc": "Only the highest reached threshold is used.",
+  "staminaattributes.client.texture_layer.texture_ids": "Texture Identifiers",
+  "staminaattributes.client.texture_layer.texture_ids.desc": "Only the highest reached threshold is used.",
+
+  "staminaattributes.client.show_current_value_overlay": "Show overlay",
+  "staminaattributes.client.show_current_value_overlay.desc": "Indicates the current value",
+
+  "staminaattributes.client.textureSettings.overlayTextureSettings": "Overlay Settings",
+
+  "staminaattributes.client.textureSettings.overlayTextureSettings.offset_x": "X offset from progress",
+  "staminaattributes.client.textureSettings.overlayTextureSettings.offset_y": "Y offset from progress",
+
+  "staminaattributes.client.show_icon": "Show icon",
+  "staminaattributes.client.show_icon.desc": "An additional HUD element",
+
+  "staminaattributes.client.iconTextureSettings": "Icon Settings",
+
+  "staminaattributes.client.iconTextureSettings.offset_x": "X offset from origin",
+  "staminaattributes.client.iconTextureSettings.offset_y": "Y offset from origin",
+
+  "staminaattributes.client.enable_smooth_animation": "Enable smooth animation",
+
+  "staminaattributes.client.animationSettings": "Animation Settings",
+
+  "staminaattributes.client.animationSettings.animation_interval": "Animation interval",
+  "staminaattributes.client.animationSettings.max_value_change_is_animated": "Animate max value changes",
+
+  "staminaattributes.client.show_number": "Show number",
+  "staminaattributes.client.show_number.desc": "Shows the current stamina amount as a number",
+
+  "staminaattributes.client.numberSettings": "Number Settings",
+
+  "staminaattributes.client.numberSettings.show_max_value.desc": "Additionally shows the maximum value. When stamina is reserved, it shows the unreserved maximum and the real maximum (in brackets).",
+  "staminaattributes.client.numberSettings.show_max_value": "Show maximum value",
+
+  "staminaattributes.client.numberSettings.show_when_stamina_full": "Show when stamina is full",
+
+  "staminaattributes.client.numberSettings.number_offset_x": "X offset from origin",
+  "staminaattributes.client.numberSettings.number_offset_y": "Y offset from origin",
+
+  "staminaattributes.client.numberSettings.number_color": "Number color",
+
+  "staminaattributes.server": "Server Side Settings",
+
+  "staminaattributes.server.item_use_cooldown_when_no_stamina": "Item Cooldown on missing stamina",
+  "staminaattributes.server.item_use_cooldown_when_no_stamina.desc": "When an item requires stamina to be used and stamina is below 0, the cooldown is applied (amount in ticks)",
+  "staminaattributes.server.jumping_requires_stamina": "Jumping requires stamina",
+  "staminaattributes.server.sprinting_requires_stamina": "Sprinting requires stamina",
+  "staminaattributes.server.swimming_requires_stamina": "Swimming requires stamina",
+
+  "staminaattributes.server.tickCosts": "Tick Stamina Costs",
+  "staminaattributes.server.tickCosts.desc": "These values are subtracted from the players stamina each tick (20 times per second) while the action is performed",
+
+  "staminaattributes.server.tickCosts.stamina_cost_sprinting": "Sprinting",
+  "staminaattributes.server.tickCosts.stamina_cost_walking": "Walking",
+  "staminaattributes.server.tickCosts.stamina_cost_swimming": "Swimming",
+  "staminaattributes.server.tickCosts.stamina_cost_walking_underwater": "Walking under water",
+  "staminaattributes.server.tickCosts.stamina_cost_walking_in_water": "Walking in water",
+  "staminaattributes.server.tickCosts.stamina_cost_climbing": "Climbing",
+
+  "staminaattributes.server.actionCosts": "Action Stamina Costs",
+  "staminaattributes.server.actionCosts.desc": "These values are subtracted from the players stamina each time the action is performed",
+
+  "staminaattributes.server.actionCosts.stamina_cost_sprint_jumping": "Sprint Jumping",
+  "staminaattributes.server.actionCosts.stamina_cost_jumping": "Jumping",
+
+  "gamerule.naturalStaminaRegeneration": "Naturally regenerate stamina",
+  "gamerule.naturalMaximumStamina": "Naturally available maximum stamina"
+}

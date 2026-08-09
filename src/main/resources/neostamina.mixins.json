@@ -1,9 +1,13 @@
 {
 	"required": true,
-	"package": "com.example.mixin",
+	"package": "net.squareshaper.neostamina.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"entity.LivingEntityMixin",
+		"entity.attribute.EntityAttributesMixin",
+		"entity.player.PlayerEntityMixin",
+		"server.PlayerManagerMixin",
+		"server.network.ServerPlayerEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
