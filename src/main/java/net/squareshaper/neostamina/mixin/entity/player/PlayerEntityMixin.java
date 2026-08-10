@@ -93,8 +93,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @Inject(method = "wakeUp*", at = @At("TAIL"))
     public void wakeUp(CallbackInfo ci) {
-        if (this.getWorld().isDay()) { // this day shi- is not working...
+        if (!this.getWorld().isClient() && this.getWorld().isDay()) { // maybe day shi- work with data tracker, only updating on server?
             this.neostamina$setBoostStamina(true); // once you sleep, you get boosted stamina
+        } else {
+            this.neostamina$setStamina(this.neostamina$getMaxStamina());
         }
     }
 
