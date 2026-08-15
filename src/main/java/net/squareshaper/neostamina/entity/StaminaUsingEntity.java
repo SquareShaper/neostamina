@@ -19,6 +19,8 @@ public interface StaminaUsingEntity {
 
     float neostamina$getMaxStamina();
 
+    float neostamina$getMaxStaminaChange();
+
     float neostamina$getReservedStamina();
 
     float neostamina$getItemUseStaminaCost();
@@ -41,8 +43,6 @@ public interface StaminaUsingEntity {
 
     float neostamina$getSprintJumpingActionStaminaCost();
 
-    boolean neostamina$getBoostStamina();
-
     void neostamina$addStamina(float amount);
 
     float neostamina$getStamina();
@@ -53,5 +53,9 @@ public interface StaminaUsingEntity {
 
     void neostamina$setApplyMaxStamina(boolean applyMaxStamina);
 
-    void neostamina$setBoostStamina(boolean boostStamina);
+    void neostamina$setMaxStamina(float maxStamina);
+
+    void neostamina$addMaxStamina(float maxStamina);
+
+    void neostamina$boostMaxStamina();
 }
