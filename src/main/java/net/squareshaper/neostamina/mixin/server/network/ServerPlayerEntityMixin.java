@@ -79,6 +79,4 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
             this.neostamina$setApplyMaxStamina(true);
         }
     }
-
-
 }
