@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -42,9 +41,6 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     @Shadow
     protected ItemStack activeItemStack;
 
-    @Shadow
-    public abstract boolean isSleeping();
-
     @Unique
     private int staminaTickTimer = 0;
     @Unique
@@ -56,14 +52,18 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     @Unique
     private Float oldStamina = null;
     @Unique
+    private Float oldMaxStamina = null;
+    @Unique
     private boolean applyOldStamina = true;
     @Unique
     private boolean applyMaxStamina = false;
+    @Unique
+    private boolean nerfMaxStamina = false;
 
     @Unique
     private static final TrackedData<Float> STAMINA = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.FLOAT);
     @Unique
-    private static final TrackedData<Boolean> BOOST_STAMINA = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Float> MAX_STAMINA = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -72,7 +72,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     @Inject(method = "initDataTracker", at = @At("RETURN"))
     protected void neostamina$initDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
         builder.add(STAMINA, 20.0F);
-        builder.add(BOOST_STAMINA, true);
+        builder.add(MAX_STAMINA, 20.0F);
     }
 
     @Inject(method = "createLivingAttributes", at = @At("RETURN"))
@@ -82,6 +82,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
                 .add(Neostamina.BASE_STAMINA)
                 .add(Neostamina.BOOSTED_STAMINA)
                 .add(Neostamina.MAX_STAMINA)
+                .add(Neostamina.MAX_STAMINA_CHANGE)
                 .add(Neostamina.DEPLETED_STAMINA_REGENERATION_DELAY_THRESHOLD)
                 .add(Neostamina.STAMINA_REGENERATION_DELAY_THRESHOLD)
                 .add(Neostamina.STAMINA_TICK_THRESHOLD)
@@ -102,7 +103,6 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
     public void neostamina$readCustomDataFromNbt_head(NbtCompound nbt, CallbackInfo ci) {
         float stamina;
-
         if (nbt.contains("stamina", NbtElement.NUMBER_TYPE)) {
             stamina = nbt.getFloat("stamina");
         } else {
@@ -112,36 +112,41 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
             this.oldStamina = stamina;
         }
 
-        if (nbt.contains("boost_stamina", NbtElement.BYTE_TYPE)) {
-            this.neostamina$setBoostStamina(nbt.getBoolean("boost_stamina"));
+        float maxStamina;
+        if (nbt.contains("max_stamina", NbtElement.NUMBER_TYPE)) {
+            maxStamina = nbt.getFloat("max_stamina");
         } else {
-            this.neostamina$setBoostStamina(false);
+            maxStamina = Float.MIN_VALUE;
+        }
+        if (maxStamina != Float.MIN_VALUE) {
+            this.oldMaxStamina = maxStamina;
         }
     }
 
     @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
     public void neostamina$readCustomDataFromNbt_tail(NbtCompound nbt, CallbackInfo ci) {
-
         if (nbt.contains("stamina", NbtElement.NUMBER_TYPE)) {
             this.neostamina$setStamina(nbt.getFloat("stamina"));
         }
 
-        if (nbt.contains("boost_stamina", NbtElement.BYTE_TYPE)) {
-            this.neostamina$setBoostStamina(nbt.getBoolean("boost_stamina"));
+        if (nbt.contains("max_stamina", NbtElement.NUMBER_TYPE)) {
+            this.neostamina$setMaxStamina(nbt.getFloat("max_stamina"));
         }
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
     public void neostamina$writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
-
+        nbt.putFloat("max_stamina", this.neostamina$getMaxStamina());
         nbt.putFloat("stamina", this.neostamina$getStamina());
-
-        nbt.putBoolean("boost_stamina", this.neostamina$getBoostStamina());
-
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void neostamina$tick(CallbackInfo ci) {
+        if (this.nerfMaxStamina) {
+            this.neostamina$addStamina(-this.neostamina$getMaxStaminaChange());
+            this.neostamina$addMaxStamina(-this.neostamina$getMaxStaminaChange());
+            this.neostamina$setNerfMaxStamina(false);
+        }
         if (!this.getWorld().isClient) {
 
             this.staminaTickTimer++;
@@ -183,8 +188,13 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
             }
             if (this.applyOldStamina) {
                 if (this.applyMaxStamina) {
-                    this.oldStamina = this.neostamina$getUnreservedStamina();
+                    this.oldStamina = this.neostamina$getBoostedStamina();
+                    this.oldMaxStamina = this.neostamina$getBoostedStamina();
                     this.applyMaxStamina = false;
+                }
+                if (this.oldMaxStamina != null) {
+                    this.neostamina$setMaxStamina(this.oldMaxStamina);
+                    this.oldMaxStamina = null;
                 }
                 if (this.oldStamina != null) {
                     this.neostamina$setStamina(this.oldStamina);
@@ -200,14 +210,6 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     protected void neostamina$tickItemStackUsage(ItemStack stack, CallbackInfo ci) {
         if (stack.isIn(Neostamina.CONTINUOUS_USING_COSTS_STAMINA) && neostamina$getItemUseStaminaCost() > 0 && neostamina$getStamina() > 0) {
             this.neostamina$addStamina(-neostamina$getItemUseStaminaCost());
-        }
-    }
-
-    @Inject(method = "onDamaged", at = @At("TAIL"))
-    public void neostamina$onDamaged(DamageSource damageSource, CallbackInfo ci) {
-        if (!this.getWorld().isClient()) {
-            this.neostamina$setBoostStamina(false);
-            this.neostamina$setStamina(MathHelper.clamp(this.neostamina$getStamina()-(this.neostamina$getBoostedStamina()-this.neostamina$getBaseStamina()), 0, this.neostamina$getBaseStamina()));
         }
     }
 
@@ -253,7 +255,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
 
     @Override
     public float neostamina$getMaxStamina() {
-        return this.neostamina$getBoostStamina() ? this.neostamina$getBoostedStamina() : this.neostamina$getBaseStamina();
+        return this.dataTracker.get(MAX_STAMINA);
     }
 
     @Override
@@ -312,11 +314,6 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     }
 
     @Override
-    public boolean neostamina$getBoostStamina() {
-        return this.dataTracker.get(BOOST_STAMINA);
-    }
-
-    @Override
     public void neostamina$addStamina(float amount) {
         float f = this.neostamina$getStamina();
         this.neostamina$setStamina(f + amount);
@@ -333,7 +330,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
 
     @Override
     public void neostamina$setStamina(float stamina) {
-        this.dataTracker.set(STAMINA, MathHelper.clamp(stamina, -100, this.neostamina$getUnreservedStamina()));
+        this.dataTracker.set(STAMINA, MathHelper.clamp(stamina, -0.1F, this.neostamina$getUnreservedStamina()));
     }
 
     @Override
@@ -347,7 +344,28 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     }
 
     @Override
-    public void neostamina$setBoostStamina(boolean boostStamina) {
-        this.dataTracker.set(BOOST_STAMINA, boostStamina);
+    public void neostamina$setNerfMaxStamina(boolean nerfMaxStamina) {
+        this.nerfMaxStamina = nerfMaxStamina;
+    }
+
+    @Override
+    public void neostamina$addMaxStamina(float maxStamina) {
+        this.neostamina$setMaxStamina(this.neostamina$getMaxStamina() + maxStamina);
+    }
+
+    @Override
+    public void neostamina$setMaxStamina(float maxStamina) {
+        this.dataTracker.set(MAX_STAMINA, MathHelper.clamp(maxStamina, this.neostamina$getBaseStamina(), this.neostamina$getBoostedStamina()));
+    }
+
+    @Override
+    public void neostamina$boostMaxStamina() {
+        this.neostamina$setMaxStamina(this.neostamina$getBoostedStamina());
+        this.neostamina$setStamina(this.neostamina$getBoostedStamina());
+    }
+
+    @Override
+    public float neostamina$getMaxStaminaChange() {
+        return (float) this.getAttributeValue(Neostamina.MAX_STAMINA_CHANGE);
     }
 }

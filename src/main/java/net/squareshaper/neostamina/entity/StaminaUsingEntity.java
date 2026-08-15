@@ -53,6 +53,8 @@ public interface StaminaUsingEntity {
 
     void neostamina$setApplyMaxStamina(boolean applyMaxStamina);
 
+    void neostamina$setNerfMaxStamina(boolean nerfMaxStamina);
+
     void neostamina$setMaxStamina(float maxStamina);
 
     void neostamina$addMaxStamina(float maxStamina);

@@ -1,18 +1,19 @@
 {
-	"required": true,
-	"package": "net.squareshaper.neostamina.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"entity.LivingEntityMixin",
-		"entity.attribute.EntityAttributesMixin",
-		"entity.player.PlayerEntityMixin",
-		"server.PlayerManagerMixin",
-		"server.network.ServerPlayerEntityMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
+  "required": true,
+  "package": "net.squareshaper.neostamina.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "entity.LivingEntityMixin",
+    "entity.attribute.EntityAttributesMixin",
+    "entity.player.PlayerEntityMixin",
+    "server.PlayerManagerMixin",
+    "server.network.ServerPlayerEntityMixin",
+    "server.world.ServerWorldMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
 	}
 }

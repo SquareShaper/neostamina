@@ -46,18 +46,18 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         if (!this.getWorld().isClient()) {
 
             this.getAttributes().addTemporaryModifiers(getNaturalStaminaModifiers());
-            if (Neostamina.SERVER_CONFIG.players_can_exhaust) {
-                Optional<RegistryEntry.Reference<StatusEffect>> exhausted_status_effect = Registries.STATUS_EFFECT.getEntry(Neostamina.SERVER_CONFIG.exhausted_status_effect_identifier.get());
-                if (exhausted_status_effect.isPresent()) {
-                    if (this.neostamina$getStamina() <= 0) {
-                        if (!this.hasStatusEffect(exhausted_status_effect.get())) {
-                            this.addStatusEffect(new StatusEffectInstance(exhausted_status_effect.get(), -1, 0, false, false, true));
-                        }
-                    } else {
-                        this.removeStatusEffect(exhausted_status_effect.get());
-                    }
-                }
-            }
+//            if (Neostamina.SERVER_CONFIG.players_can_exhaust) {
+//                Optional<RegistryEntry.Reference<StatusEffect>> exhausted_status_effect = Registries.STATUS_EFFECT.getEntry(Neostamina.SERVER_CONFIG.exhausted_status_effect_identifier.get());
+//                if (exhausted_status_effect.isPresent()) {
+//                    if (this.neostamina$getStamina() <= 0) {
+//                        if (!this.hasStatusEffect(exhausted_status_effect.get())) {
+//                            this.addStatusEffect(new StatusEffectInstance(exhausted_status_effect.get(), -1, 0, false, false, true));
+//                        }
+//                    } else {
+//                        this.removeStatusEffect(exhausted_status_effect.get());
+//                    }
+//                }
+//            } // exhaust ain't implemented yet
         }
     }
 
@@ -67,6 +67,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
                 .add(Neostamina.BASE_STAMINA, 0.0)
                 .add(Neostamina.BOOSTED_STAMINA, 0.0)
                 .add(Neostamina.MAX_STAMINA, 0.0)
+                .add(Neostamina.MAX_STAMINA_CHANGE, 0.0)
                 .add(Neostamina.DEPLETED_STAMINA_REGENERATION_DELAY_THRESHOLD, 0.0)
                 .add(Neostamina.STAMINA_REGENERATION_DELAY_THRESHOLD, 0.0)
                 .add(Neostamina.STAMINA_TICK_THRESHOLD, 0.0)
@@ -91,15 +92,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         }
     }
 
-    @Inject(method = "wakeUp*", at = @At("TAIL"))
-    public void wakeUp(CallbackInfo ci) {
-        if (!this.getWorld().isClient() && this.getWorld().isDay()) { // maybe day shi- work with data tracker, only updating on server?
-            this.neostamina$setBoostStamina(true); // once you sleep, you get boosted stamina
-        } else {
-            this.neostamina$setStamina(this.neostamina$getMaxStamina());
-        }
-    }
-
     @Override
     protected void swimUpward(TagKey<Fluid> fluid) {
         if (this.abilities.invulnerable || !Neostamina.SERVER_CONFIG.swimming_requires_stamina || ((StaminaUsingEntity) this).neostamina$getStamina() > 0) {
@@ -114,6 +106,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         hashMultimap.put(Neostamina.BASE_STAMINA, new EntityAttributeModifier(Neostamina.id("natural_base_stamina_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_base_stamina, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.BOOSTED_STAMINA, new EntityAttributeModifier(Neostamina.id("natural_boosted_stamina_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_boosted_stamina, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.MAX_STAMINA, new EntityAttributeModifier(Neostamina.id("natural_max_stamina_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_max_stamina, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.MAX_STAMINA_CHANGE, new EntityAttributeModifier(Neostamina.id("natural_max_stamina_change_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_max_stamina_change, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.DEPLETED_STAMINA_REGENERATION_DELAY_THRESHOLD, new EntityAttributeModifier(Neostamina.id("natural_depleted_stamina_regeneration_delay_threshold_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_depleted_stamina_regeneration_delay_threshold, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.STAMINA_REGENERATION_DELAY_THRESHOLD, new EntityAttributeModifier(Neostamina.id("natural_stamina_regeneration_delay_threshold_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_stamina_regeneration_delay_threshold, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.STAMINA_TICK_THRESHOLD, new EntityAttributeModifier(Neostamina.id("natural_stamina_tick_threshold_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_stamina_tick_threshold, EntityAttributeModifier.Operation.ADD_VALUE));

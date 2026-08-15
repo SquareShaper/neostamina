@@ -1,6 +1,7 @@
 package net.squareshaper.neostamina.mixin.server.network;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity implements StaminaUsingEntity {
@@ -79,4 +81,16 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
             this.neostamina$setApplyMaxStamina(true);
         }
     }
+
+    @Inject(method = "damage", at = @At("TAIL"))
+    public void neostamina$damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        this.neostamina$setNerfMaxStamina(true);
+    }
+
+//    @Inject(method = "wakeUp", at = @At("TAIL"))
+//    public void neostamina$wakeup(boolean skipSleepTimer, boolean updateSleepingPlayers, CallbackInfo ci) {
+//        if (this.getWorld().isDay()) {
+//            this.neostamina$boostMaxStamina();
+//        }
+//    }
 }
