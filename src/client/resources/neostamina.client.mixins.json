@@ -3,9 +3,12 @@
   "package": "net.squareshaper.neostamina.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "network.ClientPlayerEntityMixin"
+    "network.ClientPlayerEntityMixin",
+    "network.ClientPlayerInteractionManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+  ]
 }

@@ -9,12 +9,12 @@
   - [/] Climbing 10stp/s
   - [ ] Mining 10stp/s
   - [/] Attacking 10stp/hit
-  - [/] Drawing bows and crossbows, charging trident, other continuous use items? 10stp/s 
-  - [/] Shields 10stp/s, but -100stp/blocked hit
+  - [/] Drawing bows and crossbows, charging trident, blocking with shield, other continuous use items? 10stp/s 
+  - [x] Shields cost 100stp/blocked hit
   - [/] Throw item, use fishing rod, other one-click use items? 2stp/throw
   - [ ] (Optional and not nessesary) Using right click on applicable blocks/mobs such as stripping bark, tilling soil, scraping rust, shearing, breeding mobs, etc, but would take 2stp/action
 - [x] Default stamina points: 2000
-- [x] Base stamina regen 10stp/s
+- [/] Base stamina regen 10stp/s, but while regenerating naturally, rate doubles every 30 sec
 - [x] Stamina lost for every full heart below 10 hearts: -200stp (One stamina bar)
 - [x] When you heal, the max stamina refills to match each heart you regain (1 heart(20hp) = 1 stamina bar(200stp))
 - [x] For consistency, loosing half a heart makes you loose half a stamina bar (-.5hp = -100stp)
@@ -29,3 +29,5 @@
 - [x] Make the stamina bar display only 10 bars for 2000 stamina
 - [ ] Make stamina fill up when sleeping
 - [x] Make stamina regen while sneaking
+- [ ] Make minimum maximum stamina dependent on difficulty
+- [ ] Make stamina regen doubling dependent on difficulty

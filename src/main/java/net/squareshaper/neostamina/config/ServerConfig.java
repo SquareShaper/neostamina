@@ -15,6 +15,8 @@ public class ServerConfig extends Config {
     public boolean jumping_requires_stamina = true;
     public boolean sprinting_requires_stamina = true;
     public boolean swimming_requires_stamina = true;
+    public boolean breaking_blocks_requires_stamina = true;
+    public boolean attacking_requires_stamina = true;
     public float stamina_regeneration_effect = 25.0F;
     public NaturalPlayerAttributeValuesSection naturalPlayerAttributeValues = new NaturalPlayerAttributeValuesSection();
 

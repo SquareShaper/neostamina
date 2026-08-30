@@ -23,19 +23,19 @@ public class ServerEventsRegistry {
             }
             return TypedActionResult.pass(itemStack);
         });
-        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0 && ((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost() > 0) {
-                return ActionResult.FAIL;
-            }
-            ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost(), true);
-            return ActionResult.PASS;
-        });
+//        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+//            if (Neostamina.SERVER_CONFIG.attacking_requires_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0 && ((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost() > 0) {
+//                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost(), true);
+//                return ActionResult.FAIL;
+//            }
+//            return ActionResult.PASS;
+//        });
 
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
-            if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0 && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
+            if (Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0 && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
+                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost(), true);
                 return ActionResult.FAIL;
             }
-            ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost(), true);
             return ActionResult.PASS;
         });
     }

@@ -1,6 +1,8 @@
 package net.squareshaper.neostamina.mixin.entity.player;
 
 import com.google.common.collect.HashMultimap;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -124,5 +126,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         hashMultimap.put(Neostamina.INTERACTION_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_interaction_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_interaction, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.SHIELD_BLOCK_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_shield_block_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_shield_block, EntityAttributeModifier.Operation.ADD_VALUE));
         return hashMultimap;
+    }
+
+    @WrapMethod(method = "isBlockBreakingRestricted")
+    public boolean neostamina$wrapBlockBreakingRestricted(World world, BlockPos pos, GameMode gameMode, Operation<Boolean> original) {
+        if (Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina && this.neostamina$getStamina() <= 0) {
+            return true;
+        } else {
+            return original.call(world, pos, gameMode);
+        }
     }
 }
