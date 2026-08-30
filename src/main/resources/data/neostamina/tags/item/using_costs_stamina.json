@@ -1,5 +1,9 @@
 {
 	"values": [
-		"minecraft:snowball"
+		"minecraft:snowball",
+		"minecraft:egg",
+		"minecraft:wind_charge",
+		"minecraft:ender_pearl",
+		"minecraft:fishing_rod"
 	]
 }

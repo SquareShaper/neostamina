@@ -14,6 +14,8 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.squareshaper.neostamina.Neostamina;
 import net.squareshaper.neostamina.entity.StaminaUsingEntity;
@@ -64,10 +66,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
     @Inject(method = "createPlayerAttributes", at = @At("RETURN"))
     private static void neostamina$createPlayerAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
         cir.getReturnValue()
-                .add(Neostamina.BASE_STAMINA, 0.0)
-                .add(Neostamina.BOOSTED_STAMINA, 0.0)
+                .add(Neostamina.MIN_MAX_STAMINA, 0.0)
                 .add(Neostamina.MAX_STAMINA, 0.0)
-                .add(Neostamina.MAX_STAMINA_CHANGE, 0.0)
                 .add(Neostamina.DEPLETED_STAMINA_REGENERATION_DELAY_THRESHOLD, 0.0)
                 .add(Neostamina.STAMINA_REGENERATION_DELAY_THRESHOLD, 0.0)
                 .add(Neostamina.STAMINA_TICK_THRESHOLD, 0.0)
@@ -85,9 +85,9 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
     public void neostamina$post_jump(CallbackInfo ci) {
         if (!this.abilities.invulnerable) {
             if (this.isSprinting()) {
-                ((StaminaUsingEntity) this).neostamina$addStamina(-((StaminaUsingEntity) this).neostamina$getSprintJumpingActionStaminaCost());
+                ((StaminaUsingEntity) this).neostamina$addStamina(-((StaminaUsingEntity) this).neostamina$getSprintJumpingActionStaminaCost(), true);
             } else {
-                ((StaminaUsingEntity) this).neostamina$addStamina(-((StaminaUsingEntity) this).neostamina$getJumpingActionStaminaCost());
+                ((StaminaUsingEntity) this).neostamina$addStamina(-((StaminaUsingEntity) this).neostamina$getJumpingActionStaminaCost(), true);
             }
         }
     }
@@ -103,17 +103,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
     private HashMultimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> getNaturalStaminaModifiers() {
         HashMultimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> hashMultimap = HashMultimap.create();
         hashMultimap.put(Neostamina.STAMINA_REGENERATION, new EntityAttributeModifier(Neostamina.id("natural_stamina_regeneration_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_stamina_regeneration, EntityAttributeModifier.Operation.ADD_VALUE));
-        hashMultimap.put(Neostamina.BASE_STAMINA, new EntityAttributeModifier(Neostamina.id("natural_base_stamina_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_base_stamina, EntityAttributeModifier.Operation.ADD_VALUE));
-        hashMultimap.put(Neostamina.BOOSTED_STAMINA, new EntityAttributeModifier(Neostamina.id("natural_boosted_stamina_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_boosted_stamina, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.STAMINA_REGENERATION_EFFECT, new EntityAttributeModifier(Neostamina.id("stamina_regeneration_effect_modifier"), Neostamina.SERVER_CONFIG.stamina_regeneration_effect, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.MIN_MAX_STAMINA, new EntityAttributeModifier(Neostamina.id("natural_min_max_stamina_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_min_max_stamina, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.MAX_STAMINA, new EntityAttributeModifier(Neostamina.id("natural_max_stamina_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_max_stamina, EntityAttributeModifier.Operation.ADD_VALUE));
-        hashMultimap.put(Neostamina.MAX_STAMINA_CHANGE, new EntityAttributeModifier(Neostamina.id("natural_max_stamina_change_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_max_stamina_change, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.DEPLETED_STAMINA_REGENERATION_DELAY_THRESHOLD, new EntityAttributeModifier(Neostamina.id("natural_depleted_stamina_regeneration_delay_threshold_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_depleted_stamina_regeneration_delay_threshold, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.STAMINA_REGENERATION_DELAY_THRESHOLD, new EntityAttributeModifier(Neostamina.id("natural_stamina_regeneration_delay_threshold_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_stamina_regeneration_delay_threshold, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.STAMINA_TICK_THRESHOLD, new EntityAttributeModifier(Neostamina.id("natural_stamina_tick_threshold_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_stamina_tick_threshold, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.RESERVED_STAMINA, new EntityAttributeModifier(Neostamina.id("natural_reserved_stamina_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_reserved_stamina, EntityAttributeModifier.Operation.ADD_VALUE));
-        hashMultimap.put(Neostamina.ITEM_USE_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_item_use_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_item_use_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.ITEM_SINGLE_USE_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_item_single_use_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_item_single_use_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.ITEM_CONTINUOUS_USE_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_item_continuous_use_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_item_continuous_use_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.SPRINTING_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_sprinting_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_sprinting_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
-//        hashMultimap.put(Neostamina.SNEAKING_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_sneaking_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_sneaking_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.WALKING_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_walking_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_walking_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.SWIMMING_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_swimming_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_swimming_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.WALKING_UNDERWATER_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_walking_underwater_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_walking_underwater_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
@@ -121,6 +120,9 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         hashMultimap.put(Neostamina.CLIMBING_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_climbing_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_climbing_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.SPRINT_JUMPING_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_sprint_jumping_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_sprint_jumping, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.JUMPING_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_jumping_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_jumping, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.ATTACKING_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_attacking_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_attack, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.INTERACTION_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_interaction_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_interaction, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.SHIELD_BLOCK_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_shield_block_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_shield_block, EntityAttributeModifier.Operation.ADD_VALUE));
         return hashMultimap;
     }
 }

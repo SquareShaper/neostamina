@@ -1,7 +1,5 @@
 {
   "attribute.name.generic.stamina_regeneration": "Stamina Regeneration",
-  "attribute.name.generic.base_stamina": "Base Stamina",
-  "attribute.name.generic.boosted_stamina": "Boosted Stamina",
   "attribute.name.generic.max_stamina": "Max Stamina",
   "attribute.name.generic.depleted_stamina_regeneration_delay_threshold": "Depleted Stamina Regeneration Delay Threshold",
   "attribute.name.generic.stamina_regeneration_delay_threshold": "Stamina Regeneration Delay Threshold",

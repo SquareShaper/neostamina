@@ -13,21 +13,17 @@ public interface StaminaUsingEntity {
 
     float neostamina$getUnreservedStamina();
 
-    float neostamina$getBaseStamina();
-
-    float neostamina$getBoostedStamina();
-
     float neostamina$getMaxStamina();
 
-    float neostamina$getMaxStaminaChange();
+    float neostamina$getMaxStaminaAttribute();
 
     float neostamina$getReservedStamina();
 
-    float neostamina$getItemUseStaminaCost();
+    float neostamina$getItemSingleUseStaminaCost();
+
+    float neostamina$getItemContinuousUseStaminaCost();
 
     float neostamina$getSprintingTickStaminaCost();
-
-//    float neostamina$getSneakingTickStaminaCost(); remove sneak costs
 
     float neostamina$getWalkingTickStaminaCost();
 
@@ -39,11 +35,19 @@ public interface StaminaUsingEntity {
 
     float neostamina$getClimbingTickStaminaCost();
 
+    float neostamina$getMiningTickStaminaCost();
+
     float neostamina$getJumpingActionStaminaCost();
 
     float neostamina$getSprintJumpingActionStaminaCost();
 
-    void neostamina$addStamina(float amount);
+    float neostamina$getAttackActionStaminaCost();
+
+    float neostamina$getInteractionActionStaminaCost();
+
+    float neostamina$getShieldBlockActionStaminaCost();
+
+    void neostamina$addStamina(float amount, boolean shouldPauseRegeneration);
 
     float neostamina$getStamina();
 
@@ -53,11 +57,11 @@ public interface StaminaUsingEntity {
 
     void neostamina$setApplyMaxStamina(boolean applyMaxStamina);
 
-    void neostamina$setNerfMaxStamina(boolean nerfMaxStamina);
-
     void neostamina$setMaxStamina(float maxStamina);
 
-    void neostamina$addMaxStamina(float maxStamina);
+    float neostamina$getMinMaxStamina();
 
-    void neostamina$boostMaxStamina();
+    float neostamina$getHealthToStamina();
+
+    void neostamina$syncStaminaToHealth();
 }

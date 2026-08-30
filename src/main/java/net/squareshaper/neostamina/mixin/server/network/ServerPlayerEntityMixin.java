@@ -1,7 +1,6 @@
 package net.squareshaper.neostamina.mixin.server.network;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
@@ -14,7 +13,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity implements StaminaUsingEntity {
@@ -28,35 +26,35 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 0))
     private void neostamina$increaseTravelMotionStats_swimming(CallbackInfo ci) {
         if (!this.getAbilities().invulnerable) {
-            this.neostamina$addStamina(-this.neostamina$getSwimmingTickStaminaCost());
+            this.neostamina$addStamina(-this.neostamina$getSwimmingTickStaminaCost(), true);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 1))
     private void neostamina$increaseTravelMotionStats_walk_underwater(CallbackInfo ci) {
-        if (!this.getAbilities().invulnerable) {
-            this.neostamina$addStamina(-this.neostamina$getWalkingUnderwaterTickStaminaCost());
+        if (!this.getAbilities().invulnerable && !this.isSneaking()) {
+            this.neostamina$addStamina(-this.neostamina$getWalkingUnderwaterTickStaminaCost(), true);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 2))
     private void neostamina$increaseTravelMotionStats_walk_in_water(CallbackInfo ci) {
-        if (!this.getAbilities().invulnerable) {
-            this.neostamina$addStamina(-this.neostamina$getWalkingInWaterTickStaminaCost());
+        if (!this.getAbilities().invulnerable && !this.isSneaking()) {
+            this.neostamina$addStamina(-this.neostamina$getWalkingInWaterTickStaminaCost(), true);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;increaseStat(Lnet/minecraft/util/Identifier;I)V", ordinal = 3))
     private void neostamina$increaseTravelMotionStats_climbing(CallbackInfo ci) {
         if (!this.getAbilities().invulnerable) {
-            this.neostamina$addStamina(-this.neostamina$getClimbingTickStaminaCost());
+            this.neostamina$addStamina(-this.neostamina$getClimbingTickStaminaCost(), true);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 3))
     private void neostamina$increaseTravelMotionStats_sprinting(CallbackInfo ci) {
         if (!this.getAbilities().invulnerable) {
-            this.neostamina$addStamina(-this.neostamina$getSprintingTickStaminaCost());
+            this.neostamina$addStamina(-this.neostamina$getSprintingTickStaminaCost(), true);
         }
     }
 
@@ -69,8 +67,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 5))
     private void neostamina$increaseTravelMotionStats_walking(CallbackInfo ci) {
-        if (!this.getAbilities().invulnerable) {
-            this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost());
+        if (!this.getAbilities().invulnerable && !this.isSneaking()) {
+            this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), true);
         }
     }
 
@@ -80,11 +78,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
         if (this.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.LEAVE_GAME)) <= 0) {
             this.neostamina$setApplyMaxStamina(true);
         }
-    }
-
-    @Inject(method = "damage", at = @At("TAIL"))
-    public void neostamina$damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        this.neostamina$setNerfMaxStamina(true);
     }
 
 //    @Inject(method = "wakeUp", at = @At("TAIL"))

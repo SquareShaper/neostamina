@@ -1,0 +1,31 @@
+- [/] Stamina costs:
+  - [x] Walking 5stp/s
+  - [x] Sprinting 10stp/s
+  - [x] Swimming 10stp/s
+  - [x] Sprint swimming 20stp/s
+  - [x] Jumping 10stp/s
+  - [x] Sprint jumping 20stp/s
+  - [ ] Crawling 2stp/s
+  - [/] Climbing 10stp/s
+  - [ ] Mining 10stp/s
+  - [/] Attacking 10stp/hit
+  - [/] Drawing bows and crossbows, charging trident, other continuous use items? 10stp/s 
+  - [/] Shields 10stp/s, but -100stp/blocked hit
+  - [/] Throw item, use fishing rod, other one-click use items? 2stp/throw
+  - [ ] (Optional and not nessesary) Using right click on applicable blocks/mobs such as stripping bark, tilling soil, scraping rust, shearing, breeding mobs, etc, but would take 2stp/action
+- [x] Default stamina points: 2000
+- [x] Base stamina regen 10stp/s
+- [x] Stamina lost for every full heart below 10 hearts: -200stp (One stamina bar)
+- [x] When you heal, the max stamina refills to match each heart you regain (1 heart(20hp) = 1 stamina bar(200stp))
+- [x] For consistency, loosing half a heart makes you loose half a stamina bar (-.5hp = -100stp)
+- [x] Absorption and health boost also boosts max stamina, to avoid ui issues, a blue lightning bolt texture will replace the yellow to indicate the extra 200stp maxing out at 4000stp
+- [x] Optionally an additional 2000st can be added with a violet/purple energy bar replacing the blue maxing out at 6000stp if you have 30 hearts
+- [/] Using sugar to make a potion creates a potion of stamina (Basically an energy drink). Works the same as a regeneration potion but for stamina
+  - [/] 25stp/s level 1 - duration Xm Xs default
+  - [/] 25stp/s level 1 - duration Xm Xs long
+  - [/] 50stp/s level 2 - duration Xm Xs strong
+- [x] Make toggle for moving down to where hunger bar is
+- [x] Make a config option for minimum max stamina
+- [x] Make the stamina bar display only 10 bars for 2000 stamina
+- [ ] Make stamina fill up when sleeping
+- [x] Make stamina regen while sneaking
