@@ -50,28 +50,31 @@ public class ClientEventsRegistry {
 
                     if (STAMINA_BAR_DISPLAY == ResourceBarAPI.ResourceBarDisplay.ICON && (stamina < maxStamina || clientConfig.show_full_stamina_bar)) {
 
-                        drawIconResourceBar(
-                                minecraftClient,
-                                matrixStack,
-                                RESOURCE_BAR_IDENTIFIER_STRING,
-                                stamina,
-                                maxStamina,
-                                ICON_STAMINA_CONTAINER,
-                                ICON_STAMINA_FULL,
-                                ICON_STAMINA_HALF,
-                                new ArrayList<>(),// TODO reserved stamina
-                                new ArrayList<>(),
-                                originPos.getLeft(),
-                                originPos.getRight(),
-                                clientConfig.iconBarSettings.offset_x.get(),
-                                clientConfig.iconBarSettings.offset_y.get() + air_offset + armor_offset + hunger_offset,
-                                clientConfig.fill_direction,
-                                clientConfig.iconBarSettings.reverse_stack_direction.get(),
-                                clientConfig.iconBarSettings.max_icon_amount_per_bar.get(),
-                                units_per_bar,
-                                clientConfig.iconBarSettings.bar_color_variants.get(),
-                                clientConfig.iconBarSettings.override_rows.get()
-                        );
+                        if (units_per_bar > 0) {
+                            Neostamina.LOGGER.warn("MAX_STAMINA attribute not set properly");
+                            drawIconResourceBar(
+                                    minecraftClient,
+                                    matrixStack,
+                                    RESOURCE_BAR_IDENTIFIER_STRING,
+                                    stamina,
+                                    maxStamina,
+                                    ICON_STAMINA_CONTAINER,
+                                    ICON_STAMINA_FULL,
+                                    ICON_STAMINA_HALF,
+                                    new ArrayList<>(),// TODO reserved stamina
+                                    new ArrayList<>(),
+                                    originPos.getLeft(),
+                                    originPos.getRight(),
+                                    clientConfig.iconBarSettings.offset_x.get(),
+                                    clientConfig.iconBarSettings.offset_y.get() + air_offset + armor_offset + hunger_offset,
+                                    clientConfig.fill_direction,
+                                    clientConfig.iconBarSettings.reverse_stack_direction.get(),
+                                    clientConfig.iconBarSettings.max_icon_amount_per_bar.get(),
+                                    units_per_bar,
+                                    clientConfig.iconBarSettings.bar_color_variants.get(),
+                                    clientConfig.iconBarSettings.override_rows.get()
+                            );
+                        }
                     }
                     if (clientConfig.numberSettings.show_number && (stamina < maxStamina || clientConfig.numberSettings.show_when_stamina_full)) {
                         ResourceBarAPIClient.drawResourceNumber(
