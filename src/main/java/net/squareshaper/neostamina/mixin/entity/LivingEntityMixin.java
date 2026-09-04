@@ -378,7 +378,8 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
 
     @Override
     public float neostamina$getHealthToStamina() {
-        return (float) ((this.getHealth() + this.getAbsorptionAmount()) * (this.getAttributeValue(Neostamina.MAX_STAMINA) / 20));
+        return (float) this.getAttributeValue(Neostamina.MAX_STAMINA);
+//        return (float) ((this.getHealth() + this.getAbsorptionAmount()) * (this.getAttributeValue(Neostamina.MAX_STAMINA) / 20));
     }
 
     @Override

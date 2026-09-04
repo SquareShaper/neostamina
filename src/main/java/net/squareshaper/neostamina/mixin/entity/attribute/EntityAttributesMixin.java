@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(EntityAttributes.class)
 public class EntityAttributesMixin {
     static {
-        Neostamina.STAMINA_REGENERATION = Registry.registerReference(Registries.ATTRIBUTE, Neostamina.id("generic.stamina_regeneration"), new ClampedEntityAttribute("attribute.name.generic.stamina_regeneration", 10.0F, -65536.0F, 65536.0F).setTracked(true));
+        Neostamina.STAMINA_REGENERATION = Registry.registerReference(Registries.ATTRIBUTE, Neostamina.id("generic.stamina_regeneration"), new ClampedEntityAttribute("attribute.name.generic.stamina_regeneration", 0.5F, -65536.0F, 65536.0F).setTracked(true));
         Neostamina.MIN_MAX_STAMINA = Registry.registerReference(Registries.ATTRIBUTE, Neostamina.id("generic.min_max_stamina"), new ClampedEntityAttribute("attribute.name.generic.min_max_stamina", 100.0F, 0.0F, 65536.0F).setTracked(true));
         Neostamina.MAX_STAMINA = Registry.registerReference(Registries.ATTRIBUTE, Neostamina.id("generic.max_stamina"), new ClampedEntityAttribute("attribute.name.generic.max_stamina", 2000.0F, 0.0F, 65536.0F).setTracked(true));
         Neostamina.DEPLETED_STAMINA_REGENERATION_DELAY_THRESHOLD = Registry.registerReference(Registries.ATTRIBUTE, Neostamina.id("generic.depleted_stamina_regeneration_delay_threshold"), new ClampedEntityAttribute("attribute.name.generic.depleted_stamina_regeneration_delay_threshold", 60.0F, 0.0F, 65536.0F).setTracked(true));

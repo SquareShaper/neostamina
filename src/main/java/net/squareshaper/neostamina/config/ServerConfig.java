@@ -23,7 +23,7 @@ public class ServerConfig extends Config {
     public static class NaturalPlayerAttributeValuesSection extends ConfigSection {
         public float natural_stamina_regeneration = 0.5F;
         public float natural_min_max_stamina = 100.0f;
-        public float natural_max_stamina = 20000.0F;
+        public float natural_max_stamina = 2000.0F;
         public float natural_depleted_stamina_regeneration_delay_threshold = 60.0F;
         public float natural_stamina_regeneration_delay_threshold = 20.0F;
         public float natural_stamina_tick_threshold = 20.0F;
