@@ -22,7 +22,7 @@ public class ServerEventsRegistry {
         });
 
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (Neostamina.SERVER_CONFIG.attacking_requires_stamina && ((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost() > 0) {
+            if (!player.isSpectator() && !player.isCreative() && Neostamina.SERVER_CONFIG.attacking_requires_stamina && ((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost() > 0) {
                 if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
                     return ActionResult.FAIL;
                 }
@@ -32,7 +32,7 @@ public class ServerEventsRegistry {
         });
 
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
-            if (Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
+            if (!player.isSpectator() && !player.isCreative() && Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
                 if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
                     ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost(), true);
                     return ActionResult.FAIL;
@@ -42,7 +42,17 @@ public class ServerEventsRegistry {
         });
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
+            if (!player.isSpectator() && !player.isCreative() && Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
+                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+                    return ActionResult.FAIL;
+                }
+                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
+            }
+            return ActionResult.PASS;
+        });
+
+        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+            if (!player.isSpectator() && !player.isCreative() && Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
                 if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
                     return ActionResult.FAIL;
                 }

@@ -14,7 +14,7 @@
   - [/] Throw item, use fishing rod, other one-click use items? 2stp/throw
   - [ ] (Optional and not nessesary) Using right click on applicable blocks/mobs such as stripping bark, tilling soil, scraping rust, shearing, breeding mobs, etc, but would take 2stp/action
 - [x] Default stamina points: 2000
-- [ ] Base stamina regen 10stp/s, but while regenerating naturally, rate doubles every 30 sec
+- [x] Base stamina regen 10stp/s
 - [x] Stamina lost for every full heart below 10 hearts: -200stp (One stamina bar)
 - [x] When you heal, the max stamina refills to match each heart you regain (1 heart(20hp) = 1 stamina bar(200stp))
 - [x] For consistency, loosing half a heart makes you loose half a stamina bar (-.5hp = -100stp)
@@ -29,5 +29,6 @@
 - [x] Make the stamina bar display only 10 bars for 2000 stamina
 - [x] Stamina is filled fully when waking up from sleeping (skipping the night)
 - [x] Make stamina regen while sneaking
+- [ ] Make stamina regen double if regenerating naturally for 30 seconds
 - [ ] Make minimum maximum stamina dependent on difficulty
 - [ ] Make stamina regen doubling dependent on difficulty
