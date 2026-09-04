@@ -33,5 +33,5 @@
 - [ ] Make minimum maximum stamina dependent on difficulty
 - [ ] Make stamina regen doubling dependent on difficulty
 - [ ] Make interacting only cost stamina when successful
-- [ ] Fix icon cntainer not drawing when half a stamina icon is available
+- [x] Fix icon container not drawing when half a stamina icon is available
 - [ ] Should rowing in a boat cost stamina?
