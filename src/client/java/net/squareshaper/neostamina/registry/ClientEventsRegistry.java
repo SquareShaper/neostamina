@@ -183,7 +183,7 @@ public class ClientEventsRegistry {
                     for(int icon_in_bar = 0; icon_in_bar < bar_counter_reduction; ++icon_in_bar) {
                         int icon_x = bar_x - icon_in_bar * 8 - 9;
                         if (row_number == 0) {
-                            context.drawGuiTexture(container_texture_id, icon_x, row_y, 9, 9);
+                            context.drawGuiTexture(container_texture_id, icon_x, row_y, 9, 9); // also draw the container if 1500 stamina left (draw 8 in that case, currently it only draws 7)
                         }
 
                         double stamina_left = current_value - stamina_so_far;
