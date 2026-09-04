@@ -32,3 +32,4 @@
 - [ ] Make stamina regen double if regenerating naturally for 30 seconds
 - [ ] Make minimum maximum stamina dependent on difficulty
 - [ ] Make stamina regen doubling dependent on difficulty
+- [ ] Make interacting only cost stamina when successful
