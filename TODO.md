@@ -12,7 +12,7 @@
   - [/] Drawing bows and crossbows, charging trident, blocking with shield, other continuous use items? 10stp/s 
   - [x] Shields cost 100stp/blocked hit
   - [/] Throw item, use fishing rod, other one-click use items? 2stp/throw
-  - [ ] (Optional and not nessesary) Using right click on applicable blocks/mobs such as stripping bark, tilling soil, scraping rust, shearing, breeding mobs, etc, but would take 2stp/action
+  - [/] (Optional and not nessesary) Using right click on applicable blocks/mobs such as stripping bark, tilling soil, scraping rust, shearing, breeding mobs, etc, but would take 2stp/action
 - [x] Default stamina points: 2000
 - [x] Base stamina regen 10stp/s
 - [x] Stamina lost for every full heart below 10 hearts: -200stp (One stamina bar)
