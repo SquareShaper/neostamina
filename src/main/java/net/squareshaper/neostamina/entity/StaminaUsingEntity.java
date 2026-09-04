@@ -64,4 +64,6 @@ public interface StaminaUsingEntity {
     float neostamina$getHealthToStamina();
 
     void neostamina$syncStaminaToHealth();
+
+    float neostamina$getCrawlingTickStaminaCost();
 }

@@ -5,7 +5,7 @@
   - [x] Sprint swimming 20stp/s
   - [x] Jumping 10stp/s
   - [x] Sprint jumping 20stp/s
-  - [ ] Crawling 2stp/s
+  - [/] Crawling 2stp/s
   - [/] Climbing 10stp/s
   - [ ] Mining 10stp/s
   - [/] Attacking 10stp/hit
@@ -27,7 +27,7 @@
 - [x] Make toggle for moving down to where hunger bar is
 - [x] Make a config option for minimum max stamina
 - [x] Make the stamina bar display only 10 bars for 2000 stamina
-- [ ] Make stamina fill up when sleeping
+- [x] Stamina is filled fully when waking up from sleeping (skipping the night)
 - [x] Make stamina regen while sneaking
 - [ ] Make minimum maximum stamina dependent on difficulty
 - [ ] Make stamina regen doubling dependent on difficulty

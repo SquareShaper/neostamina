@@ -39,6 +39,7 @@ public class Neostamina implements ModInitializer {
 	public static RegistryEntry<EntityAttribute> ITEM_CONTINUOUS_USE_STAMINA_COST;
 	public static RegistryEntry<EntityAttribute> SPRINTING_TICK_STAMINA_COST;
 	public static RegistryEntry<EntityAttribute> WALKING_TICK_STAMINA_COST;
+	public static RegistryEntry<EntityAttribute> CRAWLING_TICK_STAMINA_COST;
 	public static RegistryEntry<EntityAttribute> SWIMMING_TICK_STAMINA_COST;
 	public static RegistryEntry<EntityAttribute> WALKING_UNDERWATER_TICK_STAMINA_COST;
 	public static RegistryEntry<EntityAttribute> WALKING_IN_WATER_TICK_STAMINA_COST;

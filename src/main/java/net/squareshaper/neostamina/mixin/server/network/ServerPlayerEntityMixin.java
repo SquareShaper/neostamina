@@ -1,6 +1,7 @@
 package net.squareshaper.neostamina.mixin.server.network;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
@@ -68,7 +69,11 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 5))
     private void neostamina$increaseTravelMotionStats_walking(CallbackInfo ci) {
         if (!this.getAbilities().invulnerable && !this.isSneaking()) {
-            this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), true);
+            if (this.canChangeIntoPose(EntityPose.SWIMMING) && !this.canChangeIntoPose(EntityPose.CROUCHING)) {
+                this.neostamina$addStamina(-this.neostamina$getCrawlingTickStaminaCost(), true);
+            } else {
+                this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), true);
+            }
         }
     }
 
@@ -79,6 +84,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
             this.neostamina$setApplyMaxStamina(true);
         }
     }
+
+
 
 //    @Inject(method = "wakeUp", at = @At("TAIL"))
 //    public void neostamina$wakeup(boolean skipSleepTimer, boolean updateSleepingPlayers, CallbackInfo ci) {
