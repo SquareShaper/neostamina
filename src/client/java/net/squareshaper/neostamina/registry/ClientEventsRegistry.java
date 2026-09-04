@@ -50,8 +50,10 @@ public class ClientEventsRegistry {
 
                     if (STAMINA_BAR_DISPLAY == ResourceBarAPI.ResourceBarDisplay.ICON && (stamina < maxStamina || clientConfig.show_full_stamina_bar)) {
 
-                        if (units_per_bar > 0) {
+                        if (!(units_per_bar > 0)) {
                             Neostamina.LOGGER.warn("MAX_STAMINA attribute not set properly");
+                        }
+                        if (units_per_bar > 0) {
                             drawIconResourceBar(
                                     minecraftClient,
                                     matrixStack,

@@ -55,6 +55,8 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     @Unique
     private int staminaSyncTimerMax = 20;
     @Unique
+    private int staminaRegenDoublingTimer = 0;
+    @Unique
     private int depletedStaminaRegenerationDelayTimer = 0;
     @Unique
     private int staminaRegenerationDelayTimer = 0;
@@ -157,6 +159,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
         this.staminaSyncTimer++;
         if (this.staminaSyncTimer >= staminaSyncTimerMax) {
             this.neostamina$syncStaminaToHealth();
+            this.staminaSyncTimer = 0;
         }
         if (!this.getWorld().isClient) {
 
@@ -177,18 +180,17 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
                 this.staminaRegenerationDelayTimer++;
             }
 
-            if (
-                    this.staminaTickTimer > this.neostamina$getStaminaTickThreshold()
+            if (this.staminaTickTimer > this.neostamina$getStaminaTickThreshold()
                             && this.depletedStaminaRegenerationDelayTimer > this.neostamina$getDepletedStaminaRegenerationDelayThreshold()
-                            && this.staminaRegenerationDelayTimer > this.neostamina$getStaminaRegenerationDelayThreshold()
-            ) {
+                            && this.staminaRegenerationDelayTimer > this.neostamina$getStaminaRegenerationDelayThreshold()) {
                 if (this.neostamina$getStamina() < this.neostamina$getUnreservedStamina()) {
                     this.neostamina$addStamina(this.neostamina$getRegeneratedStamina(), false);
                 }
+
                 if (this.neostamina$getStamina() > this.neostamina$getUnreservedStamina() || this.neostamina$getRegeneratedStamina() < 0) {
                     this.neostamina$setStamina(this.neostamina$getUnreservedStamina());
                 }
-//                this.staminaTickTimer = 0; // commented out to make stamina regen smooth, per tick operation
+                this.staminaTickTimer = 0;
             }
 
             if (this.isUsingItem() && this.activeItemStack.isIn(Neostamina.CONTINUOUS_USING_COSTS_STAMINA) && this.neostamina$getItemContinuousUseStaminaCost() > 0 && this.neostamina$getStamina() <= 0) {
@@ -241,7 +243,8 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
 
     @Override
     public float neostamina$getRegeneratedStamina() {
-        return this.neostamina$getStaminaRegeneration();
+        // this.staminaRegenDoublingTimer * this.neostamina$getStaminaTickThreshold() should be twenty times the amount of seconds passed since starting regeneration, always
+        return this.neostamina$getStaminaRegeneration() * (1 + ((this.staminaRegenDoublingTimer * this.neostamina$getStaminaTickThreshold()) % Neostamina.SERVER_CONFIG.stamina_regeneration_doubling_interval));
     }
 
     @Override
