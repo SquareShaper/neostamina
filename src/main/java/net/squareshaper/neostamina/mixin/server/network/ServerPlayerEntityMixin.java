@@ -68,8 +68,10 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 5))
     private void neostamina$increaseTravelMotionStats_walking(CallbackInfo ci) {
-        if (!this.getAbilities().invulnerable && !this.isSneaking()) {
+        if (!this.getAbilities().invulnerable && !this.isSneaking() && !this.isSwimming()) {
             if (this.canChangeIntoPose(EntityPose.SWIMMING) && !this.canChangeIntoPose(EntityPose.CROUCHING)) {
+                // These requirements are from updatePose() in PlayerEntity - if testing shows that it applies to non crawling as well,
+                // go there and figure stuff out
                 this.neostamina$addStamina(-this.neostamina$getCrawlingTickStaminaCost(), true);
             } else {
                 this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), true);
