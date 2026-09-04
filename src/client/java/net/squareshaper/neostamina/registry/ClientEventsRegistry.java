@@ -23,6 +23,7 @@ import java.util.List;
 public class ClientEventsRegistry {
     private static final String RESOURCE_BAR_IDENTIFIER_STRING = Neostamina.MOD_ID + ":stamina";
     private static final Identifier ICON_STAMINA_CONTAINER = Neostamina.id("hud/icon_stamina_container");
+    private static final Identifier ICON_HALF_STAMINA_CONTAINER = Neostamina.id("hud/icon_stamina_container_half");
     private static final Identifier ICON_STAMINA_FULL = Neostamina.id("hud/icon_stamina_full");
     private static final Identifier ICON_STAMINA_HALF = Neostamina.id("hud/icon_stamina_half");
     private static final ResourceBarAPI.ResourceBarDisplay STAMINA_BAR_DISPLAY = ResourceBarAPI.ResourceBarDisplay.ICON;
@@ -61,6 +62,7 @@ public class ClientEventsRegistry {
                                     stamina,
                                     maxStamina,
                                     ICON_STAMINA_CONTAINER,
+                                    ICON_HALF_STAMINA_CONTAINER,
                                     ICON_STAMINA_FULL,
                                     ICON_STAMINA_HALF,
                                     new ArrayList<>(),// TODO reserved stamina
@@ -98,185 +100,58 @@ public class ClientEventsRegistry {
                 }
             }
         });
-        ConfigApi.event().onUpdateClient((identifier, config) -> {
-            if (identifier.equals(Identifier.of(Neostamina.MOD_ID, "client"))) {
-                ResourceBarAPIClient.clearCache(
-                        RESOURCE_BAR_IDENTIFIER_STRING,
-                        new double[]{
-                                -1,
-                                -1,
-                                0,
-                                -91,
-                                -45,
-                                5,
-                                182,
-                                5,
-                                182,
-                                5,
-                                182,
-                                5,
-                                5,
-                                0,
-                                0
-                        },
-                        new Identifier[]{
-                                Identifier.of("neostamina", "textures/gui/sprites/hud/horizontal_stamina_background.png"),
-                                Identifier.of("neostamina", "textures/gui/sprites/hud/horizontal_stamina_progress_decrease_animation.png"),
-                                Identifier.of("neostamina", "textures/gui/sprites/hud/horizontal_stamina_progress_increase_animation.png"),
-                                Identifier.of("neostamina", "textures/gui/sprites/hud/horizontal_stamina_progress_increase_value.png"),
-                                Identifier.of("neostamina", "textures/gui/sprites/hud/horizontal_stamina_progress.png"),
-                                Identifier.of("neostamina", "textures/gui/sprites/hud/horizontal_stamina_reserved.png"),
-                                Identifier.of("neostamina", "textures/gui/sprites/hud/horizontal_stamina_overlay.png"),
-                                null
-                        }
-                );
-            }
-        });
     }
 
-    public static void drawIconResourceBar(MinecraftClient client, DrawContext context, String identifier_string, double current_value, double max_value, Identifier container_texture_id, Identifier full_texture_id, Identifier half_texture_id, List<ResourceBarAPI.AdditionalIconType> additional_affix_values, List<ResourceBarAPI.AdditionalIconType> additional_prefix_values, int origin_x, int origin_y, int offset_x, int offset_y, ResourceBarAPI.ResourceBarFillDirection resource_bar_fill_direction, boolean reverse_stack_direction, int max_icon_amount_per_bar, int units_per_bar, int bar_color_variants, boolean override_rows) {
-        int units_per_icon = units_per_bar/max_icon_amount_per_bar;
-        int bar_counter = (int)(max_value + (double)0.5F) / units_per_icon;
-        if (bar_counter != 0) {
+    public static void drawIconResourceBar(MinecraftClient client, DrawContext context, String identifier_string, double current_value, double max_value, Identifier container_texture_id, Identifier half_container_texture_id, Identifier full_texture_id, Identifier half_texture_id, List<ResourceBarAPI.AdditionalIconType> additional_affix_values, List<ResourceBarAPI.AdditionalIconType> additional_prefix_values, int origin_x, int origin_y, int offset_x, int offset_y, ResourceBarAPI.ResourceBarFillDirection resource_bar_fill_direction, boolean reverse_stack_direction, int max_icon_amount_per_bar, int units_per_bar, int bar_color_variants, boolean override_rows) {
+        // upi = 2000 / 20 = 100
+        int units_per_icon = units_per_bar / max_icon_amount_per_bar;
+        int half_containers_to_draw = (int) Math.ceil((Math.min(max_value, units_per_bar) / units_per_icon * 2));
+        int half_icons_to_draw = (int) Math.ceil(current_value / units_per_icon * 2);
+        if (half_icons_to_draw != 0) {
             client.getProfiler().push(identifier_string);
             int bar_y = origin_y + offset_y;
             int bar_x = origin_x + offset_x;
-            if (resource_bar_fill_direction == ResourceBarAPI.ResourceBarFillDirection.LEFT_TO_RIGHT) {
-                int m = bar_y;
-                int n = 0;
+            if (resource_bar_fill_direction == ResourceBarAPI.ResourceBarFillDirection.RIGHT_TO_LEFT) {
                 RenderSystem.enableBlend();
 
-                for(; bar_counter > 0; n += max_icon_amount_per_bar * 2) {
-                    int o = Math.min(bar_counter, max_icon_amount_per_bar);
-                    bar_counter -= o;
-
-                    for(int p = 0; p < o; ++p) {
-                        int q = bar_x + p * 8;
-                        context.drawGuiTexture(container_texture_id, q, m, 9, 9);
-                        if ((double)(p * 2 + 1 + n) < current_value) {
-                            context.drawGuiTexture(full_texture_id, q, m, 9, 9);
-                        }
-
-                        if ((double)(p * 2 + 1 + n) == current_value) {
-                            context.drawGuiTexture(half_texture_id, q, m, 9, 9);
-                        }
-                    }
-
-                    if (reverse_stack_direction) {
-                        m -= 10;
-                    } else {
-                        m += 10;
-                    }
-                }
-
-                RenderSystem.disableBlend();
-            } else if (resource_bar_fill_direction == ResourceBarAPI.ResourceBarFillDirection.RIGHT_TO_LEFT) {
                 int row_y = bar_y;
-                int stamina_so_far = 0;
+                // Draw containers
+                for (int i = 0; i < half_containers_to_draw; ++i) {
+                    int icon_x = bar_x - i/2 * 8 - 9;
+                    if (i % 2 == 0) {
+                        context.drawGuiTexture(half_container_texture_id, icon_x, row_y, 9, 9);
+                    } else {
+                        context.drawGuiTexture(container_texture_id, icon_x, row_y, 9, 9);
+                    }
+                }
+
+                int icon_x = bar_x - 9;
                 int row_number = 0;
-                RenderSystem.enableBlend();
 
-                for(; bar_counter > 0; stamina_so_far += max_icon_amount_per_bar * units_per_icon) {
-                    int bar_counter_reduction = Math.min(bar_counter, max_icon_amount_per_bar);
-                    bar_counter -= bar_counter_reduction;
-
-                    for(int icon_in_bar = 0; icon_in_bar < bar_counter_reduction; ++icon_in_bar) {
-                        int icon_x = bar_x - icon_in_bar * 8 - 9;
-                        if (row_number == 0) {
-                            context.drawGuiTexture(container_texture_id, icon_x, row_y, 9, 9); // also draw the container if 1500 stamina left (draw 8 in that case, currently it only draws 7)
-                        }
-
-                        double stamina_left = current_value - stamina_so_far;
-                        if (stamina_left > icon_in_bar * units_per_icon && stamina_left <= icon_in_bar * units_per_icon + (double) units_per_icon / 2) {
-                            context.drawGuiTexture(half_texture_id.withSuffixedPath("_"+row_number % bar_color_variants), icon_x, row_y, 9, 9);
-                        }
-                        if (stamina_left > icon_in_bar * units_per_icon + (double) units_per_icon / 2) {
-                            context.drawGuiTexture(full_texture_id.withSuffixedPath("_"+row_number % bar_color_variants), icon_x, row_y, 9, 9);
-                        }
-
-
-//                        if ((double)(icon_in_bar * units_per_icon + units_per_icon/2 + stamina_so_far) < current_value) {
-//                            context.drawGuiTexture(full_texture_id.withSuffixedPath("_"+row_number % bar_color_variants), icon_x, row_y, 9, 9);
-//                        }
-//
-//                        if ((double)(icon_in_bar * units_per_icon + units_per_icon/2 + stamina_so_far) == current_value) {
-//                            context.drawGuiTexture(half_texture_id.withSuffixedPath("_"+row_number % bar_color_variants), icon_x, row_y, 9, 9);
-//                        }
-                    }
-
-                    if (!override_rows) {
-                        if (reverse_stack_direction) {
-                            row_y -= 10;
-                        } else {
-                            row_y += 10;
-                        }
-                    }
-                    row_number++;
-                }
-
-                RenderSystem.disableBlend();
-            } else if (resource_bar_fill_direction == ResourceBarAPI.ResourceBarFillDirection.TOP_TO_BOTTOM) {
-                int n = bar_x;
-                int m = 0;
-                RenderSystem.enableBlend();
-
-                for(; bar_counter > 0; m += max_icon_amount_per_bar * 2) {
-                    int o = Math.min(bar_counter, max_icon_amount_per_bar);
-                    bar_counter -= o;
-
-                    for(int p = 0; p < o; ++p) {
-                        int q = bar_y + p * 8;
-                        context.drawGuiTexture(container_texture_id, n, q, 9, 9);
-                        if ((double)(p * 2 + 1 + m) < current_value) {
-                            context.drawGuiTexture(full_texture_id, n, q, 9, 9);
-                        }
-
-                        if ((double)(p * 2 + 1 + m) == current_value) {
-                            context.drawGuiTexture(half_texture_id, n, q, 9, 9);
-                        }
-                    }
-
-                    if (reverse_stack_direction) {
-                        n -= 10;
+                for (int i = 0; i < half_icons_to_draw; i++) {
+                    if (i % 2 == 0) {
+                        context.drawGuiTexture(half_texture_id.withSuffixedPath("_" + row_number % bar_color_variants), icon_x, row_y, 9, 9);
                     } else {
-                        n += 10;
+                        context.drawGuiTexture(full_texture_id.withSuffixedPath("_" + row_number % bar_color_variants), icon_x, row_y, 9, 9);
+                        icon_x -= 8;
+                    }
+
+                    if (i % 20 == 0 && i > 0) {
+                        if (!override_rows) {
+                            if (reverse_stack_direction) {
+                                row_y -= 10;
+                            } else {
+                                row_y += 10;
+                            }
+                        }
+                        row_number++;
+                        icon_x = bar_x - 9;
                     }
                 }
-
-                RenderSystem.disableBlend();
-            } else if (resource_bar_fill_direction == ResourceBarAPI.ResourceBarFillDirection.BOTTOM_TO_TOP) {
-                int n = bar_x;
-                int m = 0;
-                RenderSystem.enableBlend();
-
-                for(; bar_counter > 0; m += max_icon_amount_per_bar * 2) {
-                    int o = Math.min(bar_counter, max_icon_amount_per_bar);
-                    bar_counter -= o;
-
-                    for(int p = 0; p < o; ++p) {
-                        int q = bar_y - p * 8 - 9;
-                        context.drawGuiTexture(container_texture_id, n, q, 9, 9);
-                        if ((double)(p * 2 + 1 + m) < current_value) {
-                            context.drawGuiTexture(full_texture_id, n, q, 9, 9);
-                        }
-
-                        if ((double)(p * 2 + 1 + m) == current_value) {
-                            context.drawGuiTexture(half_texture_id, n, q, 9, 9);
-                        }
-                    }
-
-                    if (reverse_stack_direction) {
-                        n -= 10;
-                    } else {
-                        n += 10;
-                    }
-                }
-
-                RenderSystem.disableBlend();
             }
 
-            client.getProfiler().pop();
+            RenderSystem.disableBlend();
         }
-
+        client.getProfiler().pop();
     }
 }
