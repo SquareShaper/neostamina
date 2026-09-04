@@ -1,9 +1,6 @@
 package net.squareshaper.neostamina.registry;
 
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.event.player.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
@@ -23,18 +20,33 @@ public class ServerEventsRegistry {
             }
             return TypedActionResult.pass(itemStack);
         });
-//        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-//            if (Neostamina.SERVER_CONFIG.attacking_requires_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0 && ((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost() > 0) {
-//                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost(), true);
-//                return ActionResult.FAIL;
-//            }
-//            return ActionResult.PASS;
-//        });
+
+        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (Neostamina.SERVER_CONFIG.attacking_requires_stamina && ((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost() > 0) {
+                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+                    return ActionResult.FAIL;
+                }
+                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost(), true);
+            }
+            return ActionResult.PASS;
+        });
 
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
-            if (Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0 && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
-                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost(), true);
-                return ActionResult.FAIL;
+            if (Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
+                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+                    ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost(), true);
+                    return ActionResult.FAIL;
+                }
+            }
+            return ActionResult.PASS;
+        });
+
+        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
+                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+                    return ActionResult.FAIL;
+                }
+                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
             }
             return ActionResult.PASS;
         });

@@ -17,6 +17,7 @@ public class ServerConfig extends Config {
     public boolean swimming_requires_stamina = true;
     public boolean breaking_blocks_requires_stamina = true;
     public boolean attacking_requires_stamina = true;
+    public boolean interacting_requires_stamina = true;
     public float stamina_regeneration_effect = 25.0F;
     public int stamina_regeneration_doubling_interval = 10*20;
     public NaturalPlayerAttributeValuesSection naturalPlayerAttributeValues = new NaturalPlayerAttributeValuesSection();
