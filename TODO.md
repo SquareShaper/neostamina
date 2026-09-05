@@ -1,9 +1,9 @@
 - [/] Stamina costs:
-  - [x] Walking 5stp/s
+  - [/] Walking 5stp/s, but shouldn't interrupt stamina regen
   - [x] Sprinting 10stp/s
   - [x] Swimming 10stp/s
   - [x] Sprint swimming 20stp/s
-  - [x] Jumping 10stp/s
+  - [ ] Jumping shouldn't cost stamina anymore
   - [x] Sprint jumping 20stp/s
   - [/] Crawling 2stp/s
   - [/] Climbing 10stp/s
@@ -34,4 +34,4 @@
 - [ ] Make stamina regen doubling dependent on difficulty
 - [ ] Make interacting only cost stamina when successful
 - [x] Fix icon container not drawing when half a stamina icon is available
-- [ ] Should rowing in a boat cost stamina?
+- [ ] Rowing in a boat should cost 20stp/s on land, 10stp/s in water, 5stp/s on ice
