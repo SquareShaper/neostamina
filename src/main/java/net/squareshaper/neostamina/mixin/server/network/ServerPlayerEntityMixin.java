@@ -12,6 +12,7 @@ import net.minecraft.stat.ServerStatHandler;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.squareshaper.neostamina.Neostamina;
 import net.squareshaper.neostamina.entity.StaminaUsingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -90,15 +91,25 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
     private void neostamina$increaseRidingMotionStats_boat(double deltaX, double deltaY, double deltaZ, CallbackInfo ci) {
         ServerWorld world = this.getServerWorld();
 
+        if(!Neostamina.SERVER_CONFIG.rowing_requires_stamina) {
+            return;
+        }
+
         if (!world.getBlockState(this.getBlockPos()).getFluidState().isEmpty()) {
             // Water costs
-            int i = 1;
+            if (this.neostamina$getRowingWaterTickStaminaCost() > 0) {
+                this.neostamina$addStamina(-this.neostamina$getRowingWaterTickStaminaCost(), true);
+            }
         } else if (world.getBlockState(this.getBlockPos()).isIn(BlockTags.ICE)) {
             //ice costs
-            int i = 1;
+            if (this.neostamina$getRowingIceTickStaminaCost() > 0) {
+                this.neostamina$addStamina(-this.neostamina$getRowingIceTickStaminaCost(), true);
+            }
         } else {
             // land costs
-            int i = 1;
+            if (this.neostamina$getRowingLandTickStaminaCost() > 0) {
+                this.neostamina$addStamina(-this.neostamina$getRowingLandTickStaminaCost(), true);
+            }
         }
     }
 
