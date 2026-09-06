@@ -41,24 +41,24 @@ public class ServerEventsRegistry {
             return ActionResult.PASS;
         });
 
-        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (!player.isSpectator() && !player.isCreative() && Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
-                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
-                    return ActionResult.FAIL;
-                }
-                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
-            }
-            return ActionResult.PASS;
-        });
-
-        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if (!player.isSpectator() && !player.isCreative() && Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
-                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
-                    return ActionResult.FAIL;
-                }
-                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
-            }
-            return ActionResult.PASS;
-        });
+//        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+//            if (!player.isSpectator() && !player.isCreative() && Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
+//                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+//                    return ActionResult.FAIL;
+//                }
+//                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
+//            }
+//            return ActionResult.PASS;
+//        });
+//
+//        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+//            if (!player.isSpectator() && !player.isCreative() && Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
+//                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+//                    return ActionResult.FAIL;
+//                }
+//                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
+//            }
+//            return ActionResult.PASS;
+//        });
     }
 }
