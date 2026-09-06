@@ -12,7 +12,7 @@ public class ServerConfig extends Config {
     }
 
     public int item_use_cooldown_when_no_stamina = 20;
-    public boolean jumping_requires_stamina = true;
+    public boolean jumping_requires_stamina = false;
     public boolean sprinting_requires_stamina = true;
     public boolean swimming_requires_stamina = true;
     public boolean breaking_blocks_requires_stamina = true;
