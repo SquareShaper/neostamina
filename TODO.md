@@ -35,3 +35,4 @@
 - [ ] Make interacting only cost stamina when successful
 - [x] Fix icon container not drawing when half a stamina icon is available
 - [ ] Rowing in a boat should cost 20stp/s on land, 10stp/s in water, 5stp/s on ice
+- [ ] Should you be stop from rowing if you run out of stamina?
