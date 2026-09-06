@@ -107,7 +107,7 @@ public class ClientEventsRegistry {
         int units_per_icon = units_per_bar / max_icon_amount_per_bar;
         int half_containers_to_draw = (int) Math.ceil((Math.min(max_value, units_per_bar) / units_per_icon * 2));
         int half_icons_to_draw = (int) Math.ceil(current_value / units_per_icon * 2);
-        if (half_icons_to_draw != 0) {
+        if (half_containers_to_draw > 0) {
             client.getProfiler().push(identifier_string);
             int bar_y = origin_y + offset_y;
             int bar_x = origin_x + offset_x;

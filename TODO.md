@@ -39,4 +39,4 @@
 - [ ] Should placing blocks count towards the interaction stamina cost?
 - [ ] Should placing blocks be disallowed when out of stamina?
 - [ ] What about other entity/block interactions?
-- [ ] Fix stamina containers not rendering when at 0 / X>0 stamina
+- [x] Fix stamina containers not rendering when at 0 / X>0 stamina
