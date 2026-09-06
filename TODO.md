@@ -3,7 +3,7 @@
   - [x] Sprinting 10stp/s
   - [x] Swimming 10stp/s
   - [x] Sprint swimming 20stp/s
-  - [ ] Jumping shouldn't cost stamina anymore
+  - [x] Jumping shouldn't cost stamina anymore
   - [x] Sprint jumping 20stp/s
   - [/] Crawling 2stp/s
   - [/] Climbing 10stp/s
@@ -32,8 +32,11 @@
 - [ ] Make stamina regen double if regenerating naturally for 30 seconds
 - [ ] Make minimum maximum stamina dependent on difficulty
 - [ ] Make stamina regen doubling dependent on difficulty
-- [ ] Make interacting only cost stamina when successful
+- [x] Make interacting only cost stamina when successful
 - [x] Fix icon container not drawing when half a stamina icon is available
 - [x] Rowing in a boat should cost 20stp/s on land, 10stp/s in water, 5stp/s on ice
 - [ ] Should you be stop from rowing if you run out of stamina?
 - [ ] Should placing blocks count towards the interaction stamina cost?
+- [ ] Should placing blocks be disallowed when out of stamina?
+- [ ] What about other entity/block interactions?
+- [ ] Fix stamina containers not rendering when at 0 / X>0 stamina
