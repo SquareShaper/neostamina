@@ -37,6 +37,12 @@ public interface StaminaUsingEntity {
 
     float neostamina$getMiningTickStaminaCost();
 
+    float neostamina$getRowingLandTickStaminaCost();
+
+    float neostamina$getRowingWaterTickStaminaCost();
+
+    float neostamina$getRowingIceTickStaminaCost();
+
     float neostamina$getJumpingActionStaminaCost();
 
     float neostamina$getSprintJumpingActionStaminaCost();

@@ -18,6 +18,7 @@ public class ServerConfig extends Config {
     public boolean breaking_blocks_requires_stamina = true;
     public boolean attacking_requires_stamina = true;
     public boolean interacting_requires_stamina = true;
+    public boolean rowing_requires_stamina = true;
     public float stamina_regeneration_effect = 25.0F;
     public int stamina_regeneration_doubling_interval = 10*20;
     public NaturalPlayerAttributeValuesSection naturalPlayerAttributeValues = new NaturalPlayerAttributeValuesSection();
@@ -39,6 +40,10 @@ public class ServerConfig extends Config {
         public float natural_walking_underwater_tick_stamina_cost = 0.1F;
         public float natural_walking_in_water_tick_stamina_cost = 0.1F;
         public float natural_climbing_tick_stamina_cost = 0.1F;
+        public float natural_mining_tick_stamina_cost = 0F;
+        public float natural_rowing_land_tick_stamina_cost = 0F;
+        public float natural_rowing_water_tick_stamina_cost = 0F;
+        public float natural_rowing_ice_tick_stamina_cost = 0F;
         public float natural_action_stamina_cost_sprint_jumping = 5.0F;
         public float natural_action_stamina_cost_jumping = 10.0F;
         public float natural_action_stamina_cost_interaction = 2.0F;

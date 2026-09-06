@@ -106,6 +106,9 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
                 .add(Neostamina.WALKING_IN_WATER_TICK_STAMINA_COST)
                 .add(Neostamina.CLIMBING_TICK_STAMINA_COST)
                 .add(Neostamina.MINING_TICK_STAMINA_COST)
+                .add(Neostamina.ROWING_LAND_TICK_STAMINA_COST)
+                .add(Neostamina.ROWING_WATER_TICK_STAMINA_COST)
+                .add(Neostamina.ROWING_ICE_TICK_STAMINA_COST)
                 .add(Neostamina.JUMPING_ACTION_STAMINA_COST)
                 .add(Neostamina.SPRINT_JUMPING_ACTION_STAMINA_COST)
                 .add(Neostamina.ATTACKING_ACTION_STAMINA_COST)
@@ -318,6 +321,21 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     @Override
     public float neostamina$getMiningTickStaminaCost() {
         return (float) this.getAttributeValue(Neostamina.MINING_TICK_STAMINA_COST);
+    }
+
+    @Override
+    public float neostamina$getRowingLandTickStaminaCost() {
+        return (float) this.getAttributeValue(Neostamina.ROWING_LAND_TICK_STAMINA_COST);
+    }
+
+    @Override
+    public float neostamina$getRowingWaterTickStaminaCost() {
+        return (float) this.getAttributeValue(Neostamina.ROWING_WATER_TICK_STAMINA_COST);
+    }
+
+    @Override
+    public float neostamina$getRowingIceTickStaminaCost() {
+        return (float) this.getAttributeValue(Neostamina.ROWING_ICE_TICK_STAMINA_COST);
     }
 
     @Override

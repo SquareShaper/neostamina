@@ -121,6 +121,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         hashMultimap.put(Neostamina.WALKING_UNDERWATER_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_walking_underwater_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_walking_underwater_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.WALKING_IN_WATER_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_walking_in_water_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_walking_in_water_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.CLIMBING_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_climbing_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_climbing_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.MINING_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_mining_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_mining_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.ROWING_LAND_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_rowing_land_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_rowing_land_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.ROWING_WATER_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_rowing_water_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_rowing_water_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
+        hashMultimap.put(Neostamina.ROWING_ICE_TICK_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_rowing_ice_tick_stamina_cost_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_rowing_ice_tick_stamina_cost, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.SPRINT_JUMPING_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_sprint_jumping_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_sprint_jumping, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.JUMPING_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_jumping_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_jumping, EntityAttributeModifier.Operation.ADD_VALUE));
         hashMultimap.put(Neostamina.ATTACKING_ACTION_STAMINA_COST, new EntityAttributeModifier(Neostamina.id("natural_action_stamina_cost_attacking_modifier"), Neostamina.SERVER_CONFIG.naturalPlayerAttributeValues.natural_action_stamina_cost_attack, EntityAttributeModifier.Operation.ADD_VALUE));
@@ -131,7 +135,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @WrapMethod(method = "isBlockBreakingRestricted")
     public boolean neostamina$wrapBlockBreakingRestricted(World world, BlockPos pos, GameMode gameMode, Operation<Boolean> original) {
-        if (Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina && this.neostamina$getStamina() <= 0) {
+        if (Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina && this.neostamina$getStamina() <= 0 && this.neostamina$getMiningTickStaminaCost() > 0) {
             return true;
         } else {
             return original.call(world, pos, gameMode);
