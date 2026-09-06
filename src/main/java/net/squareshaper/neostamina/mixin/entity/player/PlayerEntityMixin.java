@@ -154,7 +154,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         ActionResult result = original.call(entity, hand);
 
         if (result == ActionResult.SUCCESS || result == ActionResult.SUCCESS_NO_ITEM_USED) {
-            int i = 1;
             if (Neostamina.SERVER_CONFIG.interacting_requires_stamina && this.neostamina$getInteractionActionStaminaCost() > 0 && !this.isCreative() && !this.isSpectator()) {
                 if (this.neostamina$getStamina() <= 0) {
                     return ActionResult.FAIL;

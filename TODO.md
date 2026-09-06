@@ -34,5 +34,6 @@
 - [ ] Make stamina regen doubling dependent on difficulty
 - [ ] Make interacting only cost stamina when successful
 - [x] Fix icon container not drawing when half a stamina icon is available
-- [ ] Rowing in a boat should cost 20stp/s on land, 10stp/s in water, 5stp/s on ice
+- [x] Rowing in a boat should cost 20stp/s on land, 10stp/s in water, 5stp/s on ice
 - [ ] Should you be stop from rowing if you run out of stamina?
+- [ ] Should placing blocks count towards the interaction stamina cost?
