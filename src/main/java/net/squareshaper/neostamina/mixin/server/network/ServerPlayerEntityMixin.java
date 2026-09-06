@@ -1,9 +1,13 @@
 package net.squareshaper.neostamina.mixin.server.network;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.IceBlock;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.ServerStatHandler;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +23,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ServerPlayerEntityMixin extends PlayerEntity implements StaminaUsingEntity {
 
     @Shadow public abstract ServerStatHandler getStatHandler();
+
+    @Shadow
+    public abstract ServerWorld getServerWorld();
 
     public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
@@ -76,6 +83,22 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
             } else {
                 this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), false);
             }
+        }
+    }
+
+    @Inject(method = "increaseRidingMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;increaseStat(Lnet/minecraft/util/Identifier;I)V", ordinal = 1))
+    private void neostamina$increaseRidingMotionStats_boat(double deltaX, double deltaY, double deltaZ, CallbackInfo ci) {
+        ServerWorld world = this.getServerWorld();
+
+        if (!world.getBlockState(this.getBlockPos()).getFluidState().isEmpty()) {
+            // Water costs
+            int i = 1;
+        } else if (world.getBlockState(this.getBlockPos()).isIn(BlockTags.ICE)) {
+            //ice costs
+            int i = 1;
+        } else {
+            // land costs
+            int i = 1;
         }
     }
 
