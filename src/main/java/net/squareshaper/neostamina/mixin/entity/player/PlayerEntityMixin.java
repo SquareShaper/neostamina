@@ -3,6 +3,7 @@ package net.squareshaper.neostamina.mixin.entity.player;
 import com.google.common.collect.HashMultimap;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -16,6 +17,9 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
@@ -40,6 +44,9 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @Shadow
     public abstract boolean isInCreativeMode();
+
+    @Shadow
+    public abstract boolean isCreative();
 
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -140,5 +147,22 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         } else {
             return original.call(world, pos, gameMode);
         }
+    }
+
+    @WrapMethod(method = "interact")
+    public ActionResult neostamina$wrapEntityInteract(Entity entity, Hand hand, Operation<ActionResult> original) {
+        ActionResult result = original.call(entity, hand);
+
+        if (result == ActionResult.SUCCESS || result == ActionResult.SUCCESS_NO_ITEM_USED) {
+            int i = 1;
+            if (Neostamina.SERVER_CONFIG.interacting_requires_stamina && this.neostamina$getInteractionActionStaminaCost() > 0 && !this.isCreative() && !this.isSpectator()) {
+                if (this.neostamina$getStamina() <= 0) {
+                    return ActionResult.FAIL;
+                }
+                this.neostamina$addStamina(-this.neostamina$getInteractionActionStaminaCost(), true);
+            }
+        }
+
+        return result;
     }
 }
