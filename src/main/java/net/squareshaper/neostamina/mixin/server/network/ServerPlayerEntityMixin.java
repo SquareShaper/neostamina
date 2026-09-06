@@ -74,7 +74,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
                 // go there and figure stuff out
                 this.neostamina$addStamina(-this.neostamina$getCrawlingTickStaminaCost(), true);
             } else {
-                this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), false);
             }
         }
     }
