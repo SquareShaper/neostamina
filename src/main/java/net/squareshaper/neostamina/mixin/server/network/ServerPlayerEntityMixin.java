@@ -122,11 +122,4 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
     }
 
 
-
-//    @Inject(method = "wakeUp", at = @At("TAIL"))
-//    public void neostamina$wakeup(boolean skipSleepTimer, boolean updateSleepingPlayers, CallbackInfo ci) {
-//        if (this.getWorld().isDay()) {
-//            this.neostamina$boostMaxStamina();
-//        }
-//    }
 }
