@@ -35,8 +35,11 @@
 - [x] Make interacting only cost stamina when successful
 - [x] Fix icon container not drawing when half a stamina icon is available
 - [x] Rowing in a boat should cost 20stp/s on land, 10stp/s in water, 5stp/s on ice
-- [ ] Should you be stop from rowing if you run out of stamina?
+- [ ] Should you be stopped from rowing if you run out of stamina? make it configurable
 - [ ] Should placing blocks count towards the interaction stamina cost?
 - [ ] Should placing blocks be disallowed when out of stamina?
 - [ ] What about other entity/block interactions?
 - [x] Fix stamina containers not rendering when at 0 / X>0 stamina
+- [ ] Fix config not staying between worlds
+- [ ] Fix stamina bar looking weird when having less than 20 hearts and absorption
+- [ ] Add exhaustion effect
