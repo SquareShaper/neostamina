@@ -41,5 +41,5 @@
 - [ ] What about other entity/block interactions?
 - [x] Fix stamina containers not rendering when at 0 / X>0 stamina
 - [ ] Fix config not staying between worlds
-- [ ] Fix stamina bar looking weird when having less than 20 hearts and absorption
+- [/] Fix stamina bar looking weird when having less than 20 hearts and absorption
 - [ ] Add exhaustion effect

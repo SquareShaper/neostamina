@@ -129,13 +129,6 @@ public class ClientEventsRegistry {
                 int row_number = 0;
 
                 for (int i = 0; i < half_icons_to_draw; i++) {
-                    if (i % 2 == 0) {
-                        context.drawGuiTexture(half_texture_id.withSuffixedPath("_" + row_number % bar_color_variants), icon_x, row_y, 9, 9);
-                    } else {
-                        context.drawGuiTexture(full_texture_id.withSuffixedPath("_" + row_number % bar_color_variants), icon_x, row_y, 9, 9);
-                        icon_x -= 8;
-                    }
-
                     if (i % 20 == 0 && i > 0) {
                         if (!override_rows) {
                             if (reverse_stack_direction) {
@@ -147,6 +140,14 @@ public class ClientEventsRegistry {
                         row_number++;
                         icon_x = bar_x - 9;
                     }
+
+                    if (i % 2 == 0) {
+                        context.drawGuiTexture(half_texture_id.withSuffixedPath("_" + row_number % bar_color_variants), icon_x, row_y, 9, 9);
+                    } else {
+                        context.drawGuiTexture(full_texture_id.withSuffixedPath("_" + row_number % bar_color_variants), icon_x, row_y, 9, 9);
+                        icon_x -= 8;
+                    }
+
                 }
             }
 
