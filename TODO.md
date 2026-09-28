@@ -1,18 +1,18 @@
 - [/] Stamina costs:
-  - [/] Walking 5stp/s, but shouldn't interrupt stamina regen
+  - [x] Walking 5stp/s, but shouldn't interrupt stamina regen
   - [x] Sprinting 10stp/s
   - [x] Swimming 10stp/s
   - [x] Sprint swimming 20stp/s
   - [x] Jumping shouldn't cost stamina anymore
   - [x] Sprint jumping 20stp/s
-  - [/] Crawling 2stp/s
-  - [/] Climbing 10stp/s
+  - [x] Crawling 2stp/s
+  - [x] Climbing 10stp/s
   - [ ] Mining 10stp/s
   - [/] Attacking 10stp/hit
-  - [/] Drawing bows and crossbows, charging trident, blocking with shield, other continuous use items? 10stp/s 
+  - [x] Drawing bows and crossbows, charging trident, blocking with shield, other continuous use items? 10stp/s 
   - [x] Shields cost 100stp/blocked hit
-  - [/] Throw item, use fishing rod, other one-click use items? 2stp/throw
-  - [/] (Optional and not nessesary) Using right click on applicable blocks/mobs such as stripping bark, tilling soil, scraping rust, shearing, breeding mobs, etc, but would take 2stp/action
+  - [x] Throw item, use fishing rod, other one-click use items? 2stp/throw
+  - [x] (Optional and not nessesary) Using right click on applicable blocks/mobs such as stripping bark, tilling soil, scraping rust, shearing, breeding mobs, etc, but would take 2stp/action
 - [x] Default stamina points: 2000
 - [x] Base stamina regen 10stp/s
 - [x] Stamina lost for every full heart below 10 hearts: -200stp (One stamina bar)
@@ -35,11 +35,10 @@
 - [x] Make interacting only cost stamina when successful
 - [x] Fix icon container not drawing when half a stamina icon is available
 - [x] Rowing in a boat should cost 20stp/s on land, 10stp/s in water, 5stp/s on ice
-- [ ] Should you be stopped from rowing if you run out of stamina? make it configurable
 - [ ] Should placing blocks count towards the interaction stamina cost?
-- [ ] Should placing blocks be disallowed when out of stamina?
-- [ ] What about other entity/block interactions?
+- [x] Should placing blocks be disallowed when out of stamina?
+- [x] What about other entity/block interactions?
 - [x] Fix stamina containers not rendering when at 0 / X>0 stamina
 - [ ] Fix config not staying between worlds
-- [/] Fix stamina bar looking weird when having less than 20 hearts and absorption
-- [ ] Add exhaustion effect
+- [x] Fix stamina bar looking weird when having less than 20 hearts and absorption
+- [x] Add exhaustion effect
