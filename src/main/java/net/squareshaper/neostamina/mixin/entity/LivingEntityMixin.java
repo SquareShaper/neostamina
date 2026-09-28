@@ -211,7 +211,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
                 this.staminaTickTimer = 0;
             }
 
-            if (this.isUsingItem() && this.activeItemStack.isIn(Neostamina.CONTINUOUS_USING_COSTS_STAMINA) && this.neostamina$getItemContinuousUseStaminaCost() > 0 && this.neostamina$getStamina() <= 0) {
+            if (this.isUsingItem() && this.activeItemStack.isIn(Neostamina.CONTINUOUS_USING_COSTS_STAMINA) && Neostamina.SERVER_CONFIG.using_item_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
                 if (((LivingEntity) (Object) this) instanceof PlayerEntity playerEntity) {
                     playerEntity.getItemCooldownManager().set(this.activeItemStack.getItem(), Neostamina.SERVER_CONFIG.item_use_cooldown_when_no_stamina);
                 }
@@ -239,7 +239,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
 
     @Inject(method = "tickItemStackUsage", at = @At("HEAD"))
     protected void neostamina$tickItemStackUsage(ItemStack stack, CallbackInfo ci) {
-        if (stack.isIn(Neostamina.CONTINUOUS_USING_COSTS_STAMINA) && neostamina$getItemContinuousUseStaminaCost() > 0 && neostamina$getStamina() > 0) {
+        if (stack.isIn(Neostamina.CONTINUOUS_USING_COSTS_STAMINA) && neostamina$getItemContinuousUseStaminaCost() > 0) {
             this.neostamina$addStamina(-neostamina$getItemContinuousUseStaminaCost(), true);
         }
     }
