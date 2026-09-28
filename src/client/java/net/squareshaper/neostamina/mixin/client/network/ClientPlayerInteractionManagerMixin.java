@@ -49,7 +49,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
                 return ActionResult.FAIL;
             }
         }
-        if (Neostamina.SERVER_CONFIG.interacting_requires_stamina) {
+        if (Neostamina.SERVER_CONFIG.interacting_costs_stamina) {
             ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
         }
 

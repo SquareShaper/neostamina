@@ -17,7 +17,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -92,7 +91,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @Inject(method = "jump", at = @At("RETURN"))
     public void neostamina$post_jump(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.jumping_requires_stamina) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.jumping_costs_stamina) {
             if (this.isSprinting()) {
                 ((StaminaUsingEntity) this).neostamina$addStamina(-((StaminaUsingEntity) this).neostamina$getSprintJumpingActionStaminaCost(), true);
             } else {
@@ -157,7 +156,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
             if (Neostamina.SERVER_CONFIG.interacting_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
                 return ActionResult.FAIL;
             }
-            if (Neostamina.SERVER_CONFIG.interacting_requires_stamina && this.neostamina$getInteractionActionStaminaCost() > 0) {
+            if (Neostamina.SERVER_CONFIG.interacting_costs_stamina && this.neostamina$getInteractionActionStaminaCost() > 0) {
                 this.neostamina$addStamina(-this.neostamina$getInteractionActionStaminaCost(), true);
             }
         }

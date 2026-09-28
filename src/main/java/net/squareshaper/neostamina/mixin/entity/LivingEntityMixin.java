@@ -441,7 +441,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
 
     @Inject(method = "blockedByShield", at = @At("RETURN"))
     private void neostamina$block(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValue() && Neostamina.SERVER_CONFIG.blocking_with_shield_requires_stamina && this.neostamina$getShieldBlockActionStaminaCost() > 0) {
+        if (cir.getReturnValue() && Neostamina.SERVER_CONFIG.blocking_with_shield_costs_stamina && this.neostamina$getShieldBlockActionStaminaCost() > 0) {
             this.neostamina$addStamina(-this.neostamina$getShieldBlockActionStaminaCost(), true);
         }
     }

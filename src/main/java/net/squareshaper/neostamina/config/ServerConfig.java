@@ -5,9 +5,7 @@ import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.squareshaper.neostamina.Neostamina;
-import net.squareshaper.neostamina.registry.StatusEffectsRegistry;
 
 @ConvertFrom(fileName = "server.json5", folder = "neostamina")
 public class ServerConfig extends Config {
@@ -16,23 +14,25 @@ public class ServerConfig extends Config {
     }
 
     public int item_use_cooldown_when_no_stamina = 20;
-    public boolean walking_requires_stamina = false;
-    public boolean jumping_requires_stamina = false;
+    public boolean walking_costs_stamina = false;
+    public boolean jumping_costs_stamina = false;
     public boolean jumping_is_blocked_by_stamina = false;
-    public boolean sprinting_requires_stamina = true;
+    public boolean sprinting_costs_stamina = true;
     public boolean sprinting_is_blocked_by_stamina = false;
-    public boolean swimming_requires_stamina = true;
+    public boolean swimming_costs_stamina = true;
     public boolean swimming_is_blocked_by_stamina = false;
-    public boolean breaking_blocks_requires_stamina = true;
+    public boolean breaking_blocks_costs_stamina = true;
     public boolean breaking_blocks_is_blocked_by_stamina = false;
-    public boolean attacking_requires_stamina = true;
+    public boolean attacking_costs_stamina = true;
     public boolean attacking_is_blocked_by_stamina = false;
-    public boolean interacting_requires_stamina = true;
+    public boolean interacting_costs_stamina = true;
     public boolean interacting_is_blocked_by_stamina = false;
-    public boolean rowing_requires_stamina = true;
-    public boolean climbing_requires_stamina = true;
-    public boolean crawling_requires_stamina = true;
-    public boolean blocking_with_shield_requires_stamina = true;
+    public boolean rowing_costs_stamina = true;
+    public boolean climbing_costs_stamina = true;
+    public boolean crawling_costs_stamina = true;
+    public boolean blocking_with_shield_costs_stamina = true;
+    public boolean using_item_costs_stamina = true;
+    public boolean using_item_is_blocked_by_stamina = true;
     public boolean players_can_exhaust = true;
     public float stamina_regeneration_effect = 25.0F;
     public int stamina_regeneration_doubling_interval = 10*20;
