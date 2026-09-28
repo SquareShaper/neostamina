@@ -1,6 +1,8 @@
 package net.squareshaper.neostamina.mixin.entity;
 
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -10,6 +12,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -19,6 +24,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.squareshaper.neostamina.Neostamina;
 import net.squareshaper.neostamina.entity.StaminaUsingEntity;
+import net.squareshaper.neostamina.registry.StatusEffectsRegistry;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -48,6 +55,14 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     @Shadow
     public abstract float getAbsorptionAmount();
 
+    @Shadow
+    public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
+
+    @Shadow
+    public abstract @Nullable StatusEffectInstance getStatusEffect(RegistryEntry<StatusEffect> effect);
+
+    @Shadow
+    private boolean effectsChanged;
     @Unique
     private int staminaTickTimer = 0;
     @Unique
@@ -429,5 +444,33 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
         if (cir.getReturnValue()) {
             this.neostamina$addStamina(-this.neostamina$getShieldBlockActionStaminaCost(), true);
         }
+    }
+
+    @WrapMethod(method = "hasStatusEffect")
+    private boolean neostamina$fakeHasMiningFatigue(RegistryEntry<StatusEffect> effect, Operation<Boolean> original) {
+        boolean result = original.call(effect);
+        if (effect != StatusEffects.MINING_FATIGUE) {
+            return result;
+        }
+
+        if (!result && this.hasStatusEffect(StatusEffectsRegistry.EXHAUSTION)) {
+            return true;
+        }
+
+        return result;
+    }
+
+    @WrapMethod(method = "getStatusEffect")
+    private @Nullable StatusEffectInstance neostamina$fakeMiningFatigueInEffectList(RegistryEntry<StatusEffect> effect, Operation<StatusEffectInstance> original) {
+        StatusEffectInstance found = original.call(effect);
+        if (effect != StatusEffects.MINING_FATIGUE) {
+            return found;
+        }
+
+        StatusEffectInstance exhaustion = this.getStatusEffect(StatusEffectsRegistry.EXHAUSTION);
+        if (found == null && exhaustion != null) {
+            return new StatusEffectInstance(StatusEffects.MINING_FATIGUE, exhaustion.getDuration(), exhaustion.getAmplifier(), exhaustion.isAmbient(), exhaustion.shouldShowParticles(), exhaustion.shouldShowIcon());
+        }
+        return found;
     }
 }
