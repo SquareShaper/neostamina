@@ -30,12 +30,9 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
     @WrapMethod(method = "isCurrentlyBreaking")
     private boolean neostamina$breakingBlock(BlockPos pos, Operation<Boolean> original) {
-        if (Neostamina.SERVER_CONFIG.breaking_blocks_requires_stamina) {
-            if (((StaminaUsingEntity) this.client.player).neostamina$getStamina() <= 0 && ((StaminaUsingEntity) this.client.player).neostamina$getMiningTickStaminaCost() > 0
-                    && pos.equals(this.currentBreakingPos)) {
-                this.cancelBlockBreaking();
-                this.client.world.setBlockBreakingInfo(this.client.player.getId(), this.currentBreakingPos, 0);
-            }
+        if (Neostamina.SERVER_CONFIG.breaking_blocks_is_blocked_by_stamina && ((StaminaUsingEntity) this.client.player).neostamina$getStamina() <= 0 && pos.equals(this.currentBreakingPos)) {
+            this.cancelBlockBreaking();
+            this.client.world.setBlockBreakingInfo(this.client.player.getId(), this.currentBreakingPos, 0);
         }
         return original.call(pos);
     }
@@ -43,16 +40,19 @@ public abstract class ClientPlayerInteractionManagerMixin {
     @WrapMethod(method = "interactBlock")
     private ActionResult neostamina$interactingBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, Operation<ActionResult> original) {
         ActionResult result = original.call(player, hand, hitResult);
-    //TODO: Make this work via server packets uwu much pain
-        if (result == ActionResult.SUCCESS_NO_ITEM_USED || result == ActionResult.SUCCESS) {
-            int i = 1;
-            if (Neostamina.SERVER_CONFIG.interacting_requires_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
-                if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
-                    return ActionResult.FAIL;
-                }
-                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
+        //TODO: Make this work via server packets uwu much pain
+        if (client.player.isCreative() || client.player.isSpectator() || !(result == ActionResult.SUCCESS_NO_ITEM_USED || result == ActionResult.SUCCESS)) {
+            return result;
+        }
+        if (Neostamina.SERVER_CONFIG.interacting_is_blocked_by_stamina) {
+            if (((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+                return ActionResult.FAIL;
             }
         }
+        if (Neostamina.SERVER_CONFIG.interacting_requires_stamina) {
+            ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
+        }
+
 
         return result;
     }
