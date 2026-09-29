@@ -3,8 +3,11 @@ package net.squareshaper.neostamina;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
@@ -16,6 +19,9 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.squareshaper.neostamina.config.ServerConfig;
+import net.squareshaper.neostamina.entity.StaminaUsingEntity;
+import net.squareshaper.neostamina.networking.UseStaminaPayload;
+import net.squareshaper.neostamina.registry.PayloadRegistry;
 import net.squareshaper.neostamina.registry.PotionRegistry;
 import net.squareshaper.neostamina.registry.ServerEventsRegistry;
 import net.squareshaper.neostamina.registry.StatusEffectsRegistry;
@@ -66,6 +72,16 @@ public class Neostamina implements ModInitializer {
 		ServerEventsRegistry.init();
 		StatusEffectsRegistry.init();
 		PotionRegistry.init();
+		PayloadRegistry.init();
+
+		// is this scuffed?
+		ServerPlayNetworking.registerGlobalReceiver(UseStaminaPayload.ID, (payload, context) -> {
+			float amount = payload.amount();
+			if (amount < 0) { // don't allow clients to give themselves stamina
+				LivingEntity player = context.player();
+				((StaminaUsingEntity) player).neostamina$addStamina(amount, payload.blockStaminaRegen());
+			}
+		});
 	}
 
 	public static Identifier id(String path) {
