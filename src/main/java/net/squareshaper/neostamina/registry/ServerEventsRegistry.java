@@ -49,9 +49,8 @@ public class ServerEventsRegistry {
             if (Neostamina.SERVER_CONFIG.breaking_blocks_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
                 return ActionResult.FAIL;
             }
-            if (Neostamina.SERVER_CONFIG.breaking_blocks_costs_stamina && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
-                ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost(), true);
-            }
+
+            // don't handle costs here, do that in the client, while breaking blocks - sending a packet to the server
 
 
             return ActionResult.PASS;

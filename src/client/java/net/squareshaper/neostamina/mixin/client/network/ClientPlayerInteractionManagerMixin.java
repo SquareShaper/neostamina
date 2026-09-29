@@ -56,7 +56,6 @@ public abstract class ClientPlayerInteractionManagerMixin {
         }
         if (Neostamina.SERVER_CONFIG.interacting_costs_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
             ClientPlayNetworking.send(new UseStaminaPayload(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true)); // Using a custom payload to send a package to the server
-            //((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true);
         }
 
 
@@ -66,6 +65,12 @@ public abstract class ClientPlayerInteractionManagerMixin {
     // TODO: Make a method for costing stamina when breaking
     @Inject(method = "tick", at = @At("TAIL"))
     private void neostamina$doBlockBreakingCosts(CallbackInfo ci) {
-        //if (this.isBreakingBlock())
+        if (!this.isBreakingBlock()) {
+            return;
+        }
+        ClientPlayerEntity player = this.client.player;
+        if (Neostamina.SERVER_CONFIG.breaking_blocks_costs_stamina && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
+            ClientPlayNetworking.send(new UseStaminaPayload(-((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost(), true)); // Using a custom payload to send a package to the server
+        }
     }
 }
