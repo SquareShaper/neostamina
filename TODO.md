@@ -7,7 +7,7 @@
   - [x] Sprint jumping 20stp/s
   - [x] Crawling 2stp/s
   - [x] Climbing 10stp/s
-  - [ ] Mining 10stp/s
+  - [/] Mining 10stp/s
   - [/] Attacking 10stp/hit
   - [x] Drawing bows and crossbows, charging trident, blocking with shield, other continuous use items? 10stp/s 
   - [x] Shields cost 100stp/blocked hit
