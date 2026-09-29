@@ -65,18 +65,11 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
         }
     }
 
-//    @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 4))
-//    private void neostamina$increaseTravelMotionStats_sneaking(CallbackInfo ci) {
-//        if (!this.getAbilities().invulnerable) {
-//            this.neostamina$addStamina(-this.neostamina$getSneakingTickStaminaCost());
-//        }
-//    } // no sneaking uwu
-
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 5))
     private void neostamina$increaseTravelMotionStats_walking(CallbackInfo ci) {
         if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.crawling_costs_stamina && this.neostamina$getCrawlingTickStaminaCost() > 0 && !this.isSneaking() && !this.isSwimming()) {
             if (this.canChangeIntoPose(EntityPose.SWIMMING) && !this.canChangeIntoPose(EntityPose.CROUCHING)) {
-                // These requirements are from updatePose() in PlayerEntity - if testing shows that it applies to non crawling as well,
+                // These requirements are from updatePose() in PlayerEntity - if testing shows that it applies to non-crawling as well,
                 // go there and figure stuff out
                 this.neostamina$addStamina(-this.neostamina$getCrawlingTickStaminaCost(), true);
             } else {

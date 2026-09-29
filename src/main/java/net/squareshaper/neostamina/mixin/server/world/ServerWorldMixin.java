@@ -17,7 +17,7 @@ import java.util.List;
 public class ServerWorldMixin {
     @Shadow
     @Final
-    private List<ServerPlayerEntity> players;
+    List<ServerPlayerEntity> players;
 
     @Inject(method = "wakeSleepingPlayers", at = @At("HEAD"))
     public void neostamina$wakeSleepingPlayers(CallbackInfo ci) {

@@ -61,14 +61,10 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
     @Shadow
     public abstract @Nullable StatusEffectInstance getStatusEffect(RegistryEntry<StatusEffect> effect);
 
-    @Shadow
-    private boolean effectsChanged;
     @Unique
     private int staminaTickTimer = 0;
     @Unique
     private int staminaSyncTimer = 0;
-    @Unique
-    private int staminaSyncTimerMax = 20;
     @Unique
     private int staminaRegenDoublingTimer = 0;
     @Unique
@@ -174,6 +170,8 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void neostamina$tick(CallbackInfo ci) {
+        int staminaSyncTimerMax = 20;
+
         this.staminaSyncTimer++;
         if (this.staminaSyncTimer >= staminaSyncTimerMax) {
             this.neostamina$syncStaminaToHealth();

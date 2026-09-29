@@ -11,7 +11,6 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.Registries;
@@ -24,7 +23,6 @@ import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.squareshaper.neostamina.Neostamina;
 import net.squareshaper.neostamina.entity.StaminaUsingEntity;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,10 +35,6 @@ import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements StaminaUsingEntity {
-    @Shadow
-    @Final
-    private PlayerAbilities abilities;
-
     @Shadow
     public abstract boolean isInCreativeMode();
 
@@ -84,7 +78,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
     public void neostamina$pre_jump(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.jumping_is_blocked_by_stamina && ((StaminaUsingEntity) this).neostamina$getStamina() <= 0) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.jumping_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
             ci.cancel();
         }
     }
@@ -93,16 +87,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
     public void neostamina$post_jump(CallbackInfo ci) {
         if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.jumping_costs_stamina) {
             if (this.isSprinting()) {
-                ((StaminaUsingEntity) this).neostamina$addStamina(-((StaminaUsingEntity) this).neostamina$getSprintJumpingActionStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getSprintJumpingActionStaminaCost(), true);
             } else {
-                ((StaminaUsingEntity) this).neostamina$addStamina(-((StaminaUsingEntity) this).neostamina$getJumpingActionStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getJumpingActionStaminaCost(), true);
             }
         }
     }
 
     @Override
     protected void swimUpward(TagKey<Fluid> fluid) {
-        if ((this.isCreative() || this.isSpectator()) || !Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.swimming_is_blocked_by_stamina || ((StaminaUsingEntity) this).neostamina$getStamina() > 0) {
+        if ((this.isCreative() || this.isSpectator()) || !Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.swimming_is_blocked_by_stamina || this.neostamina$getStamina() > 0) {
             super.swimUpward(fluid);
         }
     }
