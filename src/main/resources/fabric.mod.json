@@ -3,7 +3,7 @@
 	"id": "neostamina",
 	"version": "${version}",
 	"name": "Neostamina",
-	"description": "Stamina mod for the Neostalgia: Beta and Beyond modpack. Wholesale copied from Stamina Attributes :>",
+	"description": "Stamina mod for the Neostalgia: Beta and Beyond modpack. Based on Stamina Attributes by TheRedBrain",
 	"authors": [
 		"SquareShaper"
 	],
