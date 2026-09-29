@@ -43,4 +43,5 @@
 - [x] Fix stamina bar looking weird when having less than 20 hearts and absorption
 - [x] Add exhaustion effect
 - [ ] Check translation keys everywhere
+- [ ] Check item use tag list, to see which items should cost stamina while using
 - [ ] Bug testing!
