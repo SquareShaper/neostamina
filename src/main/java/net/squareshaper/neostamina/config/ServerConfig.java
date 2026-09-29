@@ -14,30 +14,35 @@ public class ServerConfig extends Config {
     }
 
     public int item_use_cooldown_when_no_stamina = 20;
-    public boolean walking_costs_stamina = false;
-    public boolean jumping_costs_stamina = false;
-    public boolean jumping_is_blocked_by_stamina = false;
-    public boolean sprinting_costs_stamina = true;
-    public boolean sprinting_is_blocked_by_stamina = false;
-    public boolean swimming_costs_stamina = true;
-    public boolean swimming_is_blocked_by_stamina = false;
-    public boolean breaking_blocks_costs_stamina = true;
-    public boolean breaking_blocks_is_blocked_by_stamina = false;
-    public boolean attacking_costs_stamina = true;
-    public boolean attacking_is_blocked_by_stamina = false;
-    public boolean interacting_costs_stamina = true;
-    public boolean interacting_is_blocked_by_stamina = false;
-    public boolean rowing_costs_stamina = true;
-    public boolean climbing_costs_stamina = true;
-    public boolean crawling_costs_stamina = true;
-    public boolean blocking_with_shield_costs_stamina = true;
-    public boolean using_item_costs_stamina = true;
-    public boolean using_item_is_blocked_by_stamina = true;
     public boolean players_can_exhaust = true;
     public float stamina_regeneration_effect = 25.0F;
     public int stamina_regeneration_doubling_interval = 10*20;
     public ValidatedIdentifier exhausted_status_effect_identifier = ValidatedIdentifier.ofRegistry(Neostamina.id("exhaustion"), Registries.STATUS_EFFECT);
+
+    public StaminaConsumtionAndActionBlockingRules staminaConsumtionAndActionBlockingRules = new StaminaConsumtionAndActionBlockingRules();
     public NaturalPlayerAttributeValuesSection naturalPlayerAttributeValues = new NaturalPlayerAttributeValuesSection();
+
+    public static class StaminaConsumtionAndActionBlockingRules extends ConfigSection {
+        public boolean walking_costs_stamina = false;
+        public boolean jumping_costs_stamina = false;
+        public boolean jumping_is_blocked_by_stamina = false;
+        public boolean sprinting_costs_stamina = true;
+        public boolean sprinting_is_blocked_by_stamina = false;
+        public boolean swimming_costs_stamina = true;
+        public boolean swimming_is_blocked_by_stamina = false;
+        public boolean rowing_costs_stamina = true;
+        public boolean climbing_costs_stamina = true;
+        public boolean crawling_costs_stamina = true;
+        public boolean breaking_blocks_costs_stamina = true;
+        public boolean breaking_blocks_is_blocked_by_stamina = false;
+        public boolean attacking_costs_stamina = true;
+        public boolean attacking_is_blocked_by_stamina = false;
+        public boolean interacting_costs_stamina = true;
+        public boolean interacting_is_blocked_by_stamina = false;
+        public boolean using_item_costs_stamina = true;
+        public boolean using_item_is_blocked_by_stamina = true;
+        public boolean blocking_with_shield_costs_stamina = true;
+    }
 
     public static class NaturalPlayerAttributeValuesSection extends ConfigSection {
         public float natural_stamina_regeneration = 0.5F;

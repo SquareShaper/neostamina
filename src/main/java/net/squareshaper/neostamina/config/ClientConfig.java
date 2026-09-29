@@ -2,18 +2,12 @@ package net.squareshaper.neostamina.config;
 
 import com.github.theredbrain.resourcebarapi.ResourceBarAPI;
 import me.fzzyhmstrs.fzzy_config.annotations.ConvertFrom;
-import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
-import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import net.minecraft.util.Identifier;
 import net.squareshaper.neostamina.Neostamina;
-
-import java.util.HashMap;
 
 @ConvertFrom(fileName = "client.json5", folder = "neostamina")
 public class ClientConfig extends Config {

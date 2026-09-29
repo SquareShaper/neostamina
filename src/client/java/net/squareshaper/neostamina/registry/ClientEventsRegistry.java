@@ -3,7 +3,6 @@ package net.squareshaper.neostamina.registry;
 import com.github.theredbrain.resourcebarapi.ResourceBarAPI;
 import com.github.theredbrain.resourcebarapi.ResourceBarAPIClient;
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.fzzyhmstrs.fzzy_config.api.ConfigApi;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;

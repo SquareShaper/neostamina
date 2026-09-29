@@ -15,11 +15,11 @@ public class ServerEventsRegistry {
                 return TypedActionResult.pass(itemStack);
             }
 
-            if (Neostamina.SERVER_CONFIG.using_item_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.using_item_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
                 player.getItemCooldownManager().set(itemStack.getItem(), Neostamina.SERVER_CONFIG.item_use_cooldown_when_no_stamina);
                 return TypedActionResult.fail(itemStack);
             }
-            if (Neostamina.SERVER_CONFIG.using_item_costs_stamina && ((StaminaUsingEntity) player).neostamina$getItemSingleUseStaminaCost() > 0) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.using_item_costs_stamina && ((StaminaUsingEntity) player).neostamina$getItemSingleUseStaminaCost() > 0) {
                 ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getItemSingleUseStaminaCost(), true);
             }
 
@@ -31,10 +31,10 @@ public class ServerEventsRegistry {
                 return ActionResult.PASS;
             }
 
-            if (Neostamina.SERVER_CONFIG.attacking_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.attacking_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
                 return ActionResult.FAIL;
             }
-            if (Neostamina.SERVER_CONFIG.attacking_costs_stamina && ((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost() > 0) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.attacking_costs_stamina && ((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost() > 0) {
                 ((StaminaUsingEntity) player).neostamina$addStamina(-((StaminaUsingEntity) player).neostamina$getAttackActionStaminaCost(), true);
             }
 
@@ -46,7 +46,7 @@ public class ServerEventsRegistry {
                 return ActionResult.PASS;
             }
 
-            if (Neostamina.SERVER_CONFIG.breaking_blocks_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.breaking_blocks_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
                 return ActionResult.FAIL;
             }
 

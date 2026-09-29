@@ -211,7 +211,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
                 this.staminaTickTimer = 0;
             }
 
-            if (this.isUsingItem() && this.activeItemStack.isIn(Neostamina.CONTINUOUS_USING_COSTS_STAMINA) && Neostamina.SERVER_CONFIG.using_item_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
+            if (this.isUsingItem() && this.activeItemStack.isIn(Neostamina.CONTINUOUS_USING_COSTS_STAMINA) && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.using_item_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
                 if (((LivingEntity) (Object) this) instanceof PlayerEntity playerEntity) {
                     playerEntity.getItemCooldownManager().set(this.activeItemStack.getItem(), Neostamina.SERVER_CONFIG.item_use_cooldown_when_no_stamina);
                 }
@@ -441,7 +441,7 @@ public abstract class LivingEntityMixin extends Entity implements StaminaUsingEn
 
     @Inject(method = "blockedByShield", at = @At("RETURN"))
     private void neostamina$block(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValue() && Neostamina.SERVER_CONFIG.blocking_with_shield_costs_stamina && this.neostamina$getShieldBlockActionStaminaCost() > 0) {
+        if (cir.getReturnValue() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.blocking_with_shield_costs_stamina && this.neostamina$getShieldBlockActionStaminaCost() > 0) {
             this.neostamina$addStamina(-this.neostamina$getShieldBlockActionStaminaCost(), true);
         }
     }

@@ -84,14 +84,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
     public void neostamina$pre_jump(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.jumping_is_blocked_by_stamina && ((StaminaUsingEntity) this).neostamina$getStamina() <= 0) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.jumping_is_blocked_by_stamina && ((StaminaUsingEntity) this).neostamina$getStamina() <= 0) {
             ci.cancel();
         }
     }
 
     @Inject(method = "jump", at = @At("RETURN"))
     public void neostamina$post_jump(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.jumping_costs_stamina) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.jumping_costs_stamina) {
             if (this.isSprinting()) {
                 ((StaminaUsingEntity) this).neostamina$addStamina(-((StaminaUsingEntity) this).neostamina$getSprintJumpingActionStaminaCost(), true);
             } else {
@@ -102,7 +102,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @Override
     protected void swimUpward(TagKey<Fluid> fluid) {
-        if ((this.isCreative() || this.isSpectator()) || !Neostamina.SERVER_CONFIG.swimming_is_blocked_by_stamina || ((StaminaUsingEntity) this).neostamina$getStamina() > 0) {
+        if ((this.isCreative() || this.isSpectator()) || !Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.swimming_is_blocked_by_stamina || ((StaminaUsingEntity) this).neostamina$getStamina() > 0) {
             super.swimUpward(fluid);
         }
     }
@@ -141,7 +141,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @WrapMethod(method = "isBlockBreakingRestricted")
     public boolean neostamina$wrapBlockBreakingRestricted(World world, BlockPos pos, GameMode gameMode, Operation<Boolean> original) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.breaking_blocks_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.breaking_blocks_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
             return true;
         } else {
             return original.call(world, pos, gameMode);
@@ -153,10 +153,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         ActionResult result = original.call(entity, hand);
 
         if ((result == ActionResult.SUCCESS || result == ActionResult.SUCCESS_NO_ITEM_USED) && !this.isCreative() && !this.isSpectator()) {
-            if (Neostamina.SERVER_CONFIG.interacting_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.interacting_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
                 return ActionResult.FAIL;
             }
-            if (Neostamina.SERVER_CONFIG.interacting_costs_stamina && this.neostamina$getInteractionActionStaminaCost() > 0) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.interacting_costs_stamina && this.neostamina$getInteractionActionStaminaCost() > 0) {
                 this.neostamina$addStamina(-this.neostamina$getInteractionActionStaminaCost(), true);
             }
         }
