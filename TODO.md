@@ -42,3 +42,5 @@
 - [ ] Fix config not staying between worlds
 - [x] Fix stamina bar looking weird when having less than 20 hearts and absorption
 - [x] Add exhaustion effect
+- [ ] Check translation keys everywhere
+- [ ] Bug testing!
