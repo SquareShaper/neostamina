@@ -41,7 +41,8 @@ public class ClientEventsRegistry {
 
                     int u = playerEntity.getMaxAir();
                     int v = Math.min(playerEntity.getAir(), u);
-                    int air_offset = clientConfig.dynamically_adjust_to_air_bar && playerEntity.isSubmergedIn(FluidTags.WATER) || v < u ? -10 : 0;
+                    boolean shouldAdjustAirBar = clientConfig.dynamically_adjust_to_air_bar && (playerEntity.isSubmergedIn(FluidTags.WATER) || v < u);
+                    int air_offset = shouldAdjustAirBar ? -10 : 0;
                     int armor_offset = clientConfig.dynamically_adjust_to_armor_bar && playerEntity.getArmor() > 0 ? -10 : 0;
                     int hunger_offset = clientConfig.replace_hunger ? 10 : 0;
                     int units_per_bar = MathHelper.ceil((((StaminaUsingEntity) playerEntity).neostamina$getMaxStaminaAttribute()));
