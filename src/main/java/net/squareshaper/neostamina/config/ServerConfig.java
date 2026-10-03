@@ -19,10 +19,11 @@ public class ServerConfig extends Config {
     public int stamina_regeneration_doubling_interval = 10*20;
     public ValidatedIdentifier exhausted_status_effect_identifier = ValidatedIdentifier.ofRegistry(Neostamina.id("exhaustion"), Registries.STATUS_EFFECT);
 
-    public StaminaConsumtionAndActionBlockingRules staminaConsumtionAndActionBlockingRules = new StaminaConsumtionAndActionBlockingRules();
+    public StaminaConsumptionAndActionBlockingRules staminaConsumptionAndActionBlockingRules = new StaminaConsumptionAndActionBlockingRules();
     public NaturalPlayerAttributeValuesSection naturalPlayerAttributeValues = new NaturalPlayerAttributeValuesSection();
+    public ShouldDisableStaminaRegeneration shouldDisableStaminaRegeneration = new ShouldDisableStaminaRegeneration();
 
-    public static class StaminaConsumtionAndActionBlockingRules extends ConfigSection {
+    public static class StaminaConsumptionAndActionBlockingRules extends ConfigSection {
         public boolean walking_costs_stamina = false;
         public boolean jumping_costs_stamina = false;
         public boolean jumping_is_blocked_by_stamina = false;
@@ -70,5 +71,20 @@ public class ServerConfig extends Config {
         public float natural_action_stamina_cost_interaction = 2.0F;
         public float natural_action_stamina_cost_attack = 2.0F;
         public float natural_action_stamina_cost_shield_block = 100.0F;
+    }
+
+    public static class ShouldDisableStaminaRegeneration extends ConfigSection {
+        public boolean walking_disables_stamina_regen = false;
+        public boolean jumping_disables_stamina_regen = false;
+        public boolean sprinting_disables_stamina_regen = true;
+        public boolean swimming_disables_stamina_regen = true;
+        public boolean rowing_disables_stamina_regen = true;
+        public boolean climbing_disables_stamina_regen = true;
+        public boolean crawling_disables_stamina_regen = true;
+        public boolean breaking_blocks_disables_stamina_regen = true;
+        public boolean attacking_disables_stamina_regen = true;
+        public boolean interacting_disables_stamina_regen = true;
+        public boolean using_item_disables_stamina_regen = true;
+        public boolean blocking_with_shield_disables_stamina_regen = true;
     }
 }

@@ -32,48 +32,48 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 0))
     private void neostamina$increaseTravelMotionStats_swimming(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.swimming_costs_stamina && this.neostamina$getSwimmingTickStaminaCost() > 0) {
-            this.neostamina$addStamina(-this.neostamina$getSwimmingTickStaminaCost(), true);
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.swimming_costs_stamina && this.neostamina$getSwimmingTickStaminaCost() > 0) {
+            this.neostamina$addStamina(-this.neostamina$getSwimmingTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.swimming_disables_stamina_regen);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 1))
     private void neostamina$increaseTravelMotionStats_walk_underwater(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.walking_costs_stamina && this.neostamina$getWalkingUnderwaterTickStaminaCost() > 0 && !this.isSneaking()) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.walking_costs_stamina && this.neostamina$getWalkingUnderwaterTickStaminaCost() > 0 && !this.isSneaking()) {
             this.neostamina$addStamina(-this.neostamina$getWalkingUnderwaterTickStaminaCost(), true);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 2))
     private void neostamina$increaseTravelMotionStats_walk_in_water(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.walking_costs_stamina && this.neostamina$getWalkingInWaterTickStaminaCost() > 0 && !this.isSneaking()) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.walking_costs_stamina && this.neostamina$getWalkingInWaterTickStaminaCost() > 0 && !this.isSneaking()) {
             this.neostamina$addStamina(-this.neostamina$getWalkingInWaterTickStaminaCost(), true);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;increaseStat(Lnet/minecraft/util/Identifier;I)V", ordinal = 3))
     private void neostamina$increaseTravelMotionStats_climbing(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.climbing_costs_stamina && this.neostamina$getClimbingTickStaminaCost() > 0) {
-            this.neostamina$addStamina(-this.neostamina$getClimbingTickStaminaCost(), true);
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.climbing_costs_stamina && this.neostamina$getClimbingTickStaminaCost() > 0) {
+            this.neostamina$addStamina(-this.neostamina$getClimbingTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.climbing_disables_stamina_regen);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 3))
     private void neostamina$increaseTravelMotionStats_sprinting(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.sprinting_costs_stamina && this.neostamina$getSprintingTickStaminaCost() > 0) {
-            this.neostamina$addStamina(-this.neostamina$getSprintingTickStaminaCost(), true);
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.sprinting_costs_stamina && this.neostamina$getSprintingTickStaminaCost() > 0) {
+            this.neostamina$addStamina(-this.neostamina$getSprintingTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.sprinting_disables_stamina_regen);
         }
     }
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 5))
     private void neostamina$increaseTravelMotionStats_walking(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.crawling_costs_stamina && this.neostamina$getCrawlingTickStaminaCost() > 0 && !this.isSneaking() && !this.isSwimming()) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.crawling_costs_stamina && this.neostamina$getCrawlingTickStaminaCost() > 0 && !this.isSneaking() && !this.isSwimming()) {
             if (this.canChangeIntoPose(EntityPose.SWIMMING) && !this.canChangeIntoPose(EntityPose.CROUCHING)) {
                 // These requirements are from updatePose() in PlayerEntity - if testing shows that it applies to non-crawling as well,
                 // go there and figure stuff out
-                this.neostamina$addStamina(-this.neostamina$getCrawlingTickStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getCrawlingTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.crawling_disables_stamina_regen);
             } else {
-                this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), false);
+                this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.walking_disables_stamina_regen);
             }
         }
     }
@@ -82,24 +82,24 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
     private void neostamina$increaseRidingMotionStats_boat(double deltaX, double deltaY, double deltaZ, CallbackInfo ci) {
         ServerWorld world = this.getServerWorld();
 
-        if(!Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.rowing_costs_stamina || this.isCreative() || this.isSpectator()) {
+        if(!Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.rowing_costs_stamina || this.isCreative() || this.isSpectator()) {
             return;
         }
 
         if (!world.getBlockState(this.getBlockPos()).getFluidState().isEmpty()) {
             // Water costs
             if (this.neostamina$getRowingWaterTickStaminaCost() > 0) {
-                this.neostamina$addStamina(-this.neostamina$getRowingWaterTickStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getRowingWaterTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.rowing_disables_stamina_regen);
             }
         } else if (world.getBlockState(this.getBlockPos()).isIn(BlockTags.ICE)) {
             //ice costs
             if (this.neostamina$getRowingIceTickStaminaCost() > 0) {
-                this.neostamina$addStamina(-this.neostamina$getRowingIceTickStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getRowingIceTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.rowing_disables_stamina_regen);
             }
         } else {
             // land costs
             if (this.neostamina$getRowingLandTickStaminaCost() > 0) {
-                this.neostamina$addStamina(-this.neostamina$getRowingLandTickStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getRowingLandTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.rowing_disables_stamina_regen);
             }
         }
     }

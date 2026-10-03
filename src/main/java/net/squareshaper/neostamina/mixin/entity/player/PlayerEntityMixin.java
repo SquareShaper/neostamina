@@ -78,25 +78,25 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
     public void neostamina$pre_jump(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.jumping_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.jumping_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
             ci.cancel();
         }
     }
 
     @Inject(method = "jump", at = @At("RETURN"))
     public void neostamina$post_jump(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.jumping_costs_stamina) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.jumping_costs_stamina) {
             if (this.isSprinting()) {
-                this.neostamina$addStamina(-this.neostamina$getSprintJumpingActionStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getSprintJumpingActionStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.jumping_disables_stamina_regen);
             } else {
-                this.neostamina$addStamina(-this.neostamina$getJumpingActionStaminaCost(), true);
+                this.neostamina$addStamina(-this.neostamina$getJumpingActionStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.jumping_disables_stamina_regen);
             }
         }
     }
 
     @Override
     protected void swimUpward(TagKey<Fluid> fluid) {
-        if ((this.isCreative() || this.isSpectator()) || !Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.swimming_is_blocked_by_stamina || this.neostamina$getStamina() > 0) {
+        if ((this.isCreative() || this.isSpectator()) || !Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.swimming_is_blocked_by_stamina || this.neostamina$getStamina() > 0) {
             super.swimUpward(fluid);
         }
     }
@@ -135,7 +135,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
 
     @WrapMethod(method = "isBlockBreakingRestricted")
     public boolean neostamina$wrapBlockBreakingRestricted(World world, BlockPos pos, GameMode gameMode, Operation<Boolean> original) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.breaking_blocks_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
+        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.breaking_blocks_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
             return true;
         } else {
             return original.call(world, pos, gameMode);
@@ -147,11 +147,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements StaminaU
         ActionResult result = original.call(entity, hand);
 
         if ((result == ActionResult.SUCCESS || result == ActionResult.SUCCESS_NO_ITEM_USED) && !this.isCreative() && !this.isSpectator()) {
-            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.interacting_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.interacting_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
                 return ActionResult.FAIL;
             }
-            if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.interacting_costs_stamina && this.neostamina$getInteractionActionStaminaCost() > 0) {
-                this.neostamina$addStamina(-this.neostamina$getInteractionActionStaminaCost(), true);
+            if (Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.interacting_costs_stamina && this.neostamina$getInteractionActionStaminaCost() > 0) {
+                this.neostamina$addStamina(-this.neostamina$getInteractionActionStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.interacting_disables_stamina_regen);
             }
         }
 

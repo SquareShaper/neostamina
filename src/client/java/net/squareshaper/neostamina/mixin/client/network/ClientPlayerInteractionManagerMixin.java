@@ -42,7 +42,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
         if (this.client.player == null || this.client.world == null) {
             return result;
         }
-        if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.breaking_blocks_is_blocked_by_stamina && ((StaminaUsingEntity) this.client.player).neostamina$getStamina() <= 0 && pos.equals(this.currentBreakingPos)) {
+        if (Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.breaking_blocks_is_blocked_by_stamina && ((StaminaUsingEntity) this.client.player).neostamina$getStamina() <= 0 && pos.equals(this.currentBreakingPos)) {
             this.cancelBlockBreaking();
             this.client.world.setBlockBreakingInfo(this.client.player.getId(), this.currentBreakingPos, 0);
         }
@@ -58,10 +58,10 @@ public abstract class ClientPlayerInteractionManagerMixin {
         if (client.player.isCreative() || client.player.isSpectator() || !(result == ActionResult.SUCCESS_NO_ITEM_USED || result == ActionResult.SUCCESS)) {
             return result;
         }
-        if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.interacting_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
+        if (Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.interacting_is_blocked_by_stamina && ((StaminaUsingEntity) player).neostamina$getStamina() <= 0) {
             return ActionResult.FAIL;
         }
-        if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.interacting_costs_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
+        if (Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.interacting_costs_stamina && ((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost() > 0) {
             ClientPlayNetworking.send(new UseStaminaPayload(-((StaminaUsingEntity) player).neostamina$getInteractionActionStaminaCost(), true)); // Using a custom payload to send a package to the server
         }
 
@@ -76,7 +76,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
         if (!this.isBreakingBlock() || player == null) {
             return;
         }
-        if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.breaking_blocks_costs_stamina && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
+        if (Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.breaking_blocks_costs_stamina && ((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost() > 0) {
             ClientPlayNetworking.send(new UseStaminaPayload(-((StaminaUsingEntity) player).neostamina$getMiningTickStaminaCost(), true)); // Using a custom payload to send a package to the server
         }
     }

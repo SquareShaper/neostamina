@@ -15,7 +15,7 @@ public abstract class ClientPlayerEntityMixin implements StaminaUsingEntity {
     @WrapMethod(method = "canSprint")
     private boolean staminaattributes$canSprint(Operation<Boolean> original) {
         boolean result = original.call();
-        if (Neostamina.SERVER_CONFIG.staminaConsumtionAndActionBlockingRules.sprinting_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
+        if (Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.sprinting_is_blocked_by_stamina && this.neostamina$getStamina() <= 0) {
             result = false;
         }
         return result;
