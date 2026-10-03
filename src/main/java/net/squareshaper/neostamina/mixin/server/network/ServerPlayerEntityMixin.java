@@ -67,12 +67,12 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements St
 
     @Inject(method = "increaseTravelMotionStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;addExhaustion(F)V", ordinal = 5))
     private void neostamina$increaseTravelMotionStats_walking(CallbackInfo ci) {
-        if (!this.isCreative() && !this.isSpectator() && Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.crawling_costs_stamina && this.neostamina$getCrawlingTickStaminaCost() > 0 && !this.isSneaking() && !this.isSwimming()) {
-            if (this.canChangeIntoPose(EntityPose.SWIMMING) && !this.canChangeIntoPose(EntityPose.CROUCHING)) {
+        if (!this.isCreative() && !this.isSpectator() && !this.isSneaking() && !this.isSwimming()) {
+            if (Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.crawling_costs_stamina && this.neostamina$getCrawlingTickStaminaCost() > 0 && this.canChangeIntoPose(EntityPose.SWIMMING) && !this.canChangeIntoPose(EntityPose.CROUCHING)) {
                 // These requirements are from updatePose() in PlayerEntity - if testing shows that it applies to non-crawling as well,
                 // go there and figure stuff out
                 this.neostamina$addStamina(-this.neostamina$getCrawlingTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.crawling_disables_stamina_regen);
-            } else {
+            } else if(Neostamina.SERVER_CONFIG.staminaConsumptionAndActionBlockingRules.walking_costs_stamina && this.neostamina$getWalkingTickStaminaCost() > 0) {
                 this.neostamina$addStamina(-this.neostamina$getWalkingTickStaminaCost(), Neostamina.SERVER_CONFIG.shouldDisableStaminaRegeneration.walking_disables_stamina_regen);
             }
         }
